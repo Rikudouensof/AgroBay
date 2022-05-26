@@ -12,11 +12,11 @@ namespace AgroBay.Core.Services
   {
 
     public static async Task<string> UploadFileToStorage(Stream fileStream, string fileName,
-                                                 string blobName)
+                                                 string blobName, StorageArguement storageArguement)
     {
       // Create a URI to the blob
       Uri blobUri = new Uri("https://" +
-                            AzureDataKeys.name +
+                            storageArguement.AzureStorageKeyName +
                             ".blob.core.windows.net/" +
                             blobName +
                             "/" + fileName);
@@ -24,7 +24,7 @@ namespace AgroBay.Core.Services
       // Create StorageSharedKeyCredentials object by reading
       // the values from the configuration (appsettings.json)
       StorageSharedKeyCredential storageCredentials =
-          new StorageSharedKeyCredential(AzureDataKeys.name, AzureDataKeys.key_1);
+          new StorageSharedKeyCredential(storageArguement.AzureStorageKeyName, storageArguement.AzureStorageKeyName);
 
       // Create the blob client.
       BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
@@ -45,9 +45,9 @@ namespace AgroBay.Core.Services
     }
   }
 
-  public class StorageData
+  public class StorageArguement
   {
-
-
+    public string AzureStorageKeyName { get; set; }
+    public string AzureNameKeyKey { get; set; }
   }
 }
