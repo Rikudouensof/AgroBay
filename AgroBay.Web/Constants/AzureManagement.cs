@@ -15,7 +15,7 @@ namespace AgroBay.Web.Constants
       StorageArguement storageArguement = new StorageArguement()
       {
         AzureNameKeyKey = _config["AzureStorage:key_1"],
-        AzureStorageKeyName = _config["AzureStorage:name"]
+        AzureContainerName = _config["AzureStorage:name"]
       };
 
       return storageArguement;
