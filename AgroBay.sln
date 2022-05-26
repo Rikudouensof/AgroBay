@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroBay.Core", "AgroBay.Core\AgroBay.Core.csproj", "{EC1F1919-FE53-453F-BDC5-60E24E29988E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroBay.Web", "AgroBay.Web\AgroBay.Web.csproj", "{76C14C2F-44C5-4CBE-80A5-7ED47676E231}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3164C93D-B1C0-4DE1-BCEF-C702153292D4}
+	EndGlobalSection
+EndGlobal
