@@ -13,7 +13,7 @@ namespace AgroBay.Core.Services
   public class Storage
   {
 
-    public static async Task<string> UploadFileToStorage(Stream fileStream, string fileName,
+    public  async Task<string> UploadFileToStorage(Stream fileStream, string fileName,
                                                  string blobName, StorageArguement storageArguement)
     {
       // Create a URI to the blob
@@ -47,7 +47,7 @@ namespace AgroBay.Core.Services
     }
 
 
-    public static async Task<string> DeleteFile(StorageArguement storageArguement, string fileName)
+    public  async Task<string> DeleteFile(StorageArguement storageArguement, string fileName)
     {
       bool isSucessful = false;
 

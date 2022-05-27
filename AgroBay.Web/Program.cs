@@ -4,13 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using AgroBay.Core.Model;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("AgroBayDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AgroBayDbContextConnection' not found.");
 
-builder.Services.AddDbContext<AgroBayDbContext>(options =>
-    options.UseSqlServer(connectionString));;
-
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AgroBayDbContext>();;
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -19,7 +13,9 @@ builder.Services.AddDbContext<AgroBayDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AgroBayDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

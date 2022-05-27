@@ -16,7 +16,7 @@ namespace AgroBay.Core.Model
 
     public string ImageUrl { get; set; }
 
-    public Categories Categories { get; set; }
+    public Category Categories { get; set; }
 
     public int CategoriesId { get; set; }
   }

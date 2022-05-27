@@ -17,5 +17,21 @@ namespace AgroBay.Core.Model
 
     public User User { get; set; }
     public string UserId { get; set; }
+
+
+
+    public string AvailableQuantity { get; set; }
+
+
+
+    public string ImageUrl { get; set; }
+
+
+
+    public bool isSold { get; set; }
+
+
+
+    public string Price { get; set; }
   }
 }

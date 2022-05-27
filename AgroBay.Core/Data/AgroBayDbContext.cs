@@ -9,9 +9,11 @@ public class AgroBayDbContext : IdentityDbContext<User>
   public AgroBayDbContext(DbContextOptions<AgroBayDbContext> options)
       : base(options)
   {
+
+    
   }
 
-  public DbSet<Categories> Categories { get; set; }
+  public DbSet<Category> Categories { get; set; }
   public DbSet<UserProduct> UserProducts { get; set; }
 
   public DbSet<Product> Products { get; set; }

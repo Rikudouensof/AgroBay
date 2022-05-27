@@ -21,4 +21,9 @@
     <ProjectReference Include="..\AgroBay.Core\AgroBay.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Pictures\" />
+    <Folder Include="wwwroot\Videos\" />
+  </ItemGroup>
+
 </Project>

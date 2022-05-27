@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Model
 {
-  public class Categories
+  public class Category
   {
 
     public int Id { get; set; }
