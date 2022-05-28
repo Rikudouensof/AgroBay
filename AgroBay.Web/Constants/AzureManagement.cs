@@ -2,25 +2,30 @@
 
 namespace AgroBay.Web.Constants
 {
-  public class AzureManagement
-  {
-    private IConfiguration _config;
-    public AzureManagement(IConfiguration configRoot)
+    public interface IAzureManagement
     {
-      _config = configRoot;
+        StorageArguement GetArguement();
     }
 
-    public StorageArguement GetArguement()
+    public class AzureManagement : IAzureManagement
     {
-      StorageArguement storageArguement = new StorageArguement()
-      {
-        AzureNameKeyKey = _config["AzureStorage:key_1"],
-        AzureContainerName = _config["AzureStorage:name"]
-      };
+        private IConfiguration _config;
+        public AzureManagement(IConfiguration configRoot)
+        {
+            _config = configRoot;
+        }
 
-      return storageArguement;
+        public StorageArguement GetArguement()
+        {
+            StorageArguement storageArguement = new StorageArguement()
+            {
+                AzureNameKeyKey = _config["AzureStorage:key_1"],
+                AzureContainerName = _config["AzureStorage:name"]
+            };
+
+            return storageArguement;
+        }
+
+
     }
-
-    
-  }
 }

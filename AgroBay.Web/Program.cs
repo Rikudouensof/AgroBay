@@ -2,6 +2,8 @@ using AgroBay.Core.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AgroBay.Core.Model;
+using AgroBay.Core.Services;
+using AgroBay.Web.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
      .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AgroBayDbContext>();
+
+builder.Services.AddScoped<IStorage, Storage>();
+builder.Services.AddScoped<IAzureManagement, AzureManagement>();
 
 builder.Services.AddControllersWithViews();
 

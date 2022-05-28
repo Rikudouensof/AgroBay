@@ -18,14 +18,14 @@ namespace AgroBay.Web.Controllers
   {
     private readonly AgroBayDbContext _context;
     private Microsoft.AspNetCore.Hosting.IHostingEnvironment _env;
-    private AzureManagement _storage;
-    private Storage _storageService;
+    private IAzureManagement _storage;
+    private IStorage _storageService;
 
 
     public CategoriesController(Microsoft.AspNetCore.Hosting.IHostingEnvironment env,
         AgroBayDbContext context,
-        AzureManagement azureManagement,
-        Storage storage)
+        IAzureManagement azureManagement,
+        IStorage storage)
     {
       _context = context;
       _env = env;
@@ -74,9 +74,12 @@ namespace AgroBay.Web.Controllers
     public async Task<IActionResult> Create(FileCategoryViewModel categories)
     {
       Category category = new Category();
-      categories.ImageUrl = "null";
       if (ModelState.IsValid)
       {
+
+        category.PurposeDivisionId = categories.PurposeDivisionId;
+        category.Name = categories.Name;
+        category.Description = categories.Description;
         try
         {
 
@@ -101,7 +104,7 @@ namespace AgroBay.Web.Controllers
 
           if (categories.File != null)
           {
-            string uploadsFolder = Path.Combine(_env.WebRootPath, "ProfilePicture");
+            string uploadsFolder = Path.Combine(_env.WebRootPath, "Pictures");
             uniqueName = Guid.NewGuid().ToString() + "_" + categories.File.FileName;
             filePath = Path.Combine(uploadsFolder, uniqueName);
 
@@ -113,15 +116,13 @@ namespace AgroBay.Web.Controllers
             var blobname = azureStorageArguement.AzureContainerName;
             var file = new FileStream(filePath, FileMode.Create);
             categories.File.CopyTo(file);
-            var url = _storageService.UploadFileToStorage(file, fileName, blobname, azureStorageArguement);
-            categories.ImageUrl = await url;
+           // var url = _storageService.UploadFileToStorage(file, fileName, blobname, azureStorageArguement);
+          //  var ImageUrl = await url;
 
 
 
-            category.PurposeDivisionId = categories.PurposeDivisionId;
-            category.Name = categories.Name;
-            category.ImageUrl = categories.ImageUrl;
-            category.Description = categories.Description;
+            category.ImageUrl = fileName;
+          
 
 
           }
@@ -157,7 +158,6 @@ namespace AgroBay.Web.Controllers
         Name = categories.Name,
         PurposeDivisionId = categories.PurposeDivisionId,
         Id = categories.Id,
-        ImageUrl = categories.ImageUrl
       };
       ViewData["PurposeDivisionId"] = new SelectList(_context.PurposeDivisions, "Id", "Name", categories.PurposeDivisionId);
       return View(fileCategoryViewModel);
@@ -176,7 +176,6 @@ namespace AgroBay.Web.Controllers
         return NotFound();
       }
       var category = _context.Categories.Where(m => m.Id ==id).FirstOrDefault();
-      categories.ImageUrl = "null";
 
 
       if (ModelState.IsValid)
@@ -219,14 +218,14 @@ namespace AgroBay.Web.Controllers
               var blobname = azureStorageArguement.AzureContainerName;
               var file = new FileStream(filePath, FileMode.Create);
               categories.File.CopyTo(file);
-              var url = _storageService.UploadFileToStorage(file, fileName, blobname, azureStorageArguement);
-              categories.ImageUrl = await url;
+             // var url = _storageService.UploadFileToStorage(file, fileName, blobname, azureStorageArguement);
+           //   var ImageUrl = await url;
 
 
 
               category.PurposeDivisionId = categories.PurposeDivisionId;
               category.Name = categories.Name;
-              category.ImageUrl = categories.ImageUrl;
+              category.ImageUrl = fileName;
               category.Description = categories.Description;
 
 

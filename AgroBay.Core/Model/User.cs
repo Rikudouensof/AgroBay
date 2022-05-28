@@ -10,6 +10,11 @@ namespace AgroBay.Core.Model
 {
   public class User : IdentityUser
   {
+
+    public User()
+    {
+      Messages = new HashSet<Message>();
+    }
     [Display(Name = "Display Name")]
     public string DisplayName { get; set; }
 
@@ -28,7 +33,7 @@ namespace AgroBay.Core.Model
 
     public string ImageName { get; set; }
 
-    [Display(Name = "Bing Map Info")]
+    [Display(Name = "Headquaters Address")]
     public string AddressInfoId { get; set; }
 
 
@@ -42,6 +47,6 @@ namespace AgroBay.Core.Model
 
     public string About { get; set; }
 
-
+    public virtual ICollection<Message> Messages { get; set; }
   }
 }
