@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,21 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgroBay.Core.Model
+namespace AgroBay.Core.ViewModel
 {
-  public class User : IdentityUser
+  internal class UserViewModel
   {
+  }
 
-    public User()
-    {
-      Messages = new HashSet<Message>();
-    }
+  public class FormUserViewModel
+  {
+    public string Id { get; set; }
 
-    
+    public string UserName { get; set; }
 
+    [EmailAddress]
+    public string Email { get; set; }
 
-    [Display(Name = "Display Name")]
     public string DisplayName { get; set; }
+
+    public string PhoneNumber { get; set; }
 
 
     [Display(Name = "Last Name")]
@@ -35,8 +39,9 @@ namespace AgroBay.Core.Model
     public string FirstName { get; set; }
 
 
+    public string ImageName { get; set; }
 
-    public string ImageUrl { get; set; }
+    public IFormFile File { get; set; }
 
 
     [Display(Name = "Headquaters Address")]
@@ -52,7 +57,5 @@ namespace AgroBay.Core.Model
     public DateTime LastOnline { get; set; }
 
     public string About { get; set; }
-
-    public virtual ICollection<Message> Messages { get; set; }
   }
 }

@@ -1,13 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgroBay.Core.Model
+namespace AgroBay.Core.ViewModel
 {
-  public class SubCategory
+  internal class SubCategoryViewModel
   {
+  }
+
+
+  public class FormSubCategoryViewModel
+  {
+
+
     public int Id { get; set; }
 
     public string Name { get; set; }
@@ -15,9 +23,8 @@ namespace AgroBay.Core.Model
     public string Description { get; set; }
 
 
-    public string ImageUrl { get; set; }
+    public IFormFile File { get; set; }
 
-    public Category Categories { get; set; }
 
     public int CategoriesId { get; set; }
   }
