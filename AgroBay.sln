@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroBay.Core", "AgroBay.Core\AgroBay.Core.csproj", "{EC1F1919-FE53-453F-BDC5-60E24E29988E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroBay.Web", "AgroBay.Web\AgroBay.Web.csproj", "{76C14C2F-44C5-4CBE-80A5-7ED47676E231}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroBay.Dashbord", "AgroBay.Dashbord\AgroBay.Dashbord.csproj", "{B70C3EF0-E656-4739-A649-21F6BA33761F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC1F1919-FE53-453F-BDC5-60E24E29988E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76C14C2F-44C5-4CBE-80A5-7ED47676E231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B70C3EF0-E656-4739-A649-21F6BA33761F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70C3EF0-E656-4739-A649-21F6BA33761F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70C3EF0-E656-4739-A649-21F6BA33761F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70C3EF0-E656-4739-A649-21F6BA33761F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

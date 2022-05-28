@@ -1,5 +1,6 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
+using AgroBay.Core.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Repository
 {
-  public class Categories_Repository
+  public class Categories_Repository : ICategories_Repository
   {
     private AgroBayDbContext _db;
     public Categories_Repository(AgroBayDbContext agroBayDbContext)

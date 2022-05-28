@@ -1,5 +1,6 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
+using AgroBay.Core.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Repository
 {
-  public class UserProductRepository
+  public class UserProductRepository : IUserProductRepository
   {
 
     private AgroBayDbContext _db;
