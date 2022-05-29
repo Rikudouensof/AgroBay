@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgroBay.Core.Repository
+namespace AgroBay.Core.Services
 {
   public class ProductService
   {

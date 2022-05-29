@@ -10,6 +10,15 @@ namespace AgroBay.Core.ViewModel
 
   }
 
+  public class DetailedCategoryViewModel
+  {
+    public Category Category { get; set; }
+
+    public PurposeDivision Division { get; set; }
+
+  }
+
+ 
   public class FormCategoryViewModel
   {
 

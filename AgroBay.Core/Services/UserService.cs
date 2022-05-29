@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgroBay.Core.Repository
+namespace AgroBay.Core.Services
 {
-  public class UserRepository
+  public class UserService
   {
     private AgroBayDbContext _db;
-    public UserRepository(AgroBayDbContext agroBayDbContext)
+    public UserService(AgroBayDbContext agroBayDbContext)
     {
       _db = agroBayDbContext;
     }

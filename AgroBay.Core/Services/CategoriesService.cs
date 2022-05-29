@@ -1,55 +1,162 @@
-﻿using AgroBay.Core.Data;
+﻿using AgroBay.Core.Constants;
+using AgroBay.Core.Data;
+using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
+using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services;
+using AgroBay.Core.ViewModel;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgroBay.Core.Repository
+namespace AgroBay.Core.Services
 {
   public class CategoriesService
   {
-    private Categories_Repository _repCat;
-    private Divisions_Repository _repDiv;
-    public CategoriesService(Categories_Repository rep, Divisions_Repository divisions_Repository)
+    private ICategories_Repository _repCat;
+    private IDivisions_Repository _repDiv;
+    private IHostingEnvironment _env;
+    private IStorage _azStorageService;
+    public CategoriesService(ICategories_Repository rep, IDivisions_Repository divisions_Repository, IHostingEnvironment env, IStorage storage)
     {
-      _repCat  = rep;
+      _repCat = rep;
       _repDiv = divisions_Repository;
+      _env = env;
+      _azStorageService = storage;
     }
 
 
-    public Category Get(int id)
+    public DetailedCategoryViewModel Get(int id)
     {
+
       var category = _repCat.Get(id);
+      var division = _repDiv.Get(category.PurposeDivisionId);
+      DetailedCategoryViewModel categoryViewModel = new DetailedCategoryViewModel()
+      {
+        Category = category,
+        Division = division
+      };
+      return categoryViewModel;
+    }
+
+    public IEnumerable<DetailedCategoryViewModel> GetAll()
+    {
+      List<DetailedCategoryViewModel> listCategoryViewModel = new List<DetailedCategoryViewModel>();
+      var categories = _repCat.GetAll();
+
+      foreach (var item in categories)
+      {
+        DetailedCategoryViewModel detailedCategoryViewModel = Get(item.Id);
+        listCategoryViewModel.Add(detailedCategoryViewModel);
+
+      }
+
+      return listCategoryViewModel;
+    }
+
+    public async Task<Category> AddAsync(FormCategoryViewModel input)
+    {
+      CategoryMapper categoryMapper = new CategoryMapper();
+      var category = categoryMapper.GetCategory(input);
+
+      try
+      {
+        var iscorrectformat = false;
+        string uniqueName = null;
+        string filePath = null;
+        FileInfo fi = new FileInfo(input.File.FileName);
+
+        var actualextension = fi.Extension;
+        var imageextensions = FileFormat.GetSupportedImageTypeExtensionsList();
+        foreach (var imageExtension in imageextensions)
+        {
+          if (imageExtension == actualextension.ToUpper())
+          {
+            iscorrectformat = true;
+          }
+        }
+        if (iscorrectformat == false)
+        {
+          return category;
+        }
+
+        if (input.File is not null)
+        {
+
+          var fileName = input.File.FileName;
+          var blobname = AzureDataKeys.blob_background;
+          string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
+          uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
+          filePath = Path.Combine(uploadsFolder, uniqueName);
+
+          var file = new FileStream(filePath, FileMode.Create);
+          input.File.CopyTo(file);
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          category.ImageUrl = await url;
+        }
+      }
+      catch
+      {
+        return category;
+      }
+      var processedCategory = _repCat.Add(category);
       return category;
     }
 
-    public IEnumerable<Category> GetAll()
+    public async Task<Category> Edit(FormCategoryViewModel input)
     {
-      var categories = _db.Categories;
-      return categories;
-    }
+      CategoryMapper categoryMapper = new CategoryMapper();
+      var category = categoryMapper.GetCategory(input);
+      try
+      {
+        var iscorrectformat = false;
+        string uniqueName = null;
+        string filePath = null;
+        FileInfo fi = new FileInfo(input.File.FileName);
 
-    public Category Add(Category category)
-    {
-      _db.Categories.Add(category);
-      _db.SaveChanges();
-      return category;
-    }
+        var actualextension = fi.Extension;
+        var imageextensions = FileFormat.GetSupportedImageTypeExtensionsList();
+        foreach (var imageExtension in imageextensions)
+        {
+          if (imageExtension == actualextension.ToUpper())
+          {
+            iscorrectformat = true;
+          }
+        }
+        if (iscorrectformat == false)
+        {
+          return category;
+        }
 
-    public Category Edit(Category category)
-    {
-      _db.Categories.Update(category);
-      _db.SaveChanges();
+        if (input.File is not null)
+        {
+
+          var fileName = input.File.FileName;
+          var blobname = AzureDataKeys.blob_background;
+          string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
+          uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
+          filePath = Path.Combine(uploadsFolder, uniqueName);
+
+          var file = new FileStream(filePath, FileMode.Create);
+          input.File.CopyTo(file);
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          category.ImageUrl = await url;
+        }
+      }
+      catch
+      {
+        return category;
+      }
       return category;
     }
 
     public Category DeleteCategory(Category category)
     {
-      _db.Categories.Remove(category);
-      _db.SaveChanges();
-      return category;
+      var deleted = _repCat.DeleteCategory(category);
+      return deleted;
     }
 
 

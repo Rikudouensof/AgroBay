@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgroBay.Core.Repository
+namespace AgroBay.Core.Services
 {
-  public class SubCategoryRepository
+  public class SubCategoryService
   {
 
     private AgroBayDbContext _db;
-    public SubCategoryRepository(AgroBayDbContext subCategory)
+    public SubCategoryService(AgroBayDbContext subCategory)
     {
       _db = subCategory;
     }
