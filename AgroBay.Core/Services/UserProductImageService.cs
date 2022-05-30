@@ -1,5 +1,10 @@
-﻿using AgroBay.Core.Data;
+﻿using AgroBay.Core.Constants;
+using AgroBay.Core.Data;
+using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
+using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.ViewModel;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,44 +16,164 @@ namespace AgroBay.Core.Services
   public class UserProductImageService
   {
 
-    private AgroBayDbContext _db;
-    public UserProductImageService(AgroBayDbContext agroBayDbContext)
+    private IHostingEnvironment _env;
+    private IStorage _azStorageService;
+    private IUserProductImageRepository _repoProductImage;
+    private IUserProductRepository _repoUserProduct;
+
+    public UserProductImageService( IStorage azStorageService,
+      IHostingEnvironment hostingEnvironment,
+      IUserProductRepository userProductRepository,
+      IUserProductImageRepository userProductImageRepository
+      )
     {
-      _db = agroBayDbContext;
+      _azStorageService = azStorageService;
+      _env = hostingEnvironment;
+      _repoProductImage = userProductImageRepository;
+      _repoUserProduct = userProductRepository;
     }
 
 
-    public UserProductImages Get(int id)
+    public DataProductImageViewModel Get(int id)
     {
-      var userPImages = _db.UserProductImages.First(c => c.id == id);
+      var productImage = _repoProductImage.Get(id);
+      var userProduct = _repoUserProduct.Get(id);
+      DataProductImageViewModel userPImages = new DataProductImageViewModel()
+      {
+        ProductImage = productImage, 
+        UserProduct = userProduct
+      };
       return userPImages;
     }
 
-    public IEnumerable<UserProductImages> GetAll()
+    public IEnumerable<DataProductImageViewModel> GetAll()
     {
-      var userPImages = _db.UserProductImages;
-      return userPImages;
+      List<DataProductImageViewModel> poductImageList = new List<DataProductImageViewModel>();
+      var productImages = _repoProductImage.GetAll();
+
+      foreach (var item in productImages)
+      {
+        try
+        {
+          var viewmodel = Get(item.id);
+          poductImageList.Add(viewmodel);
+        }
+        catch 
+        {
+
+        }
+      }
+
+      return poductImageList;
+
     }
 
-    public UserProductImages Add(UserProductImages userPImages)
+    public async Task<UserProductImages> Add(FormUserProductImageViewModel input)
     {
-      _db.UserProductImages.Add(userPImages);
-      _db.SaveChanges();
-      return userPImages;
+      ProductImageMapper mapper = new ProductImageMapper();
+      var productImage = mapper.GetProdutImages(input);
+
+      try
+      {
+        var iscorrectformat = false;
+        string uniqueName = null;
+        string filePath = null;
+        FileInfo fi = new FileInfo(input.File.FileName);
+
+        var actualextension = fi.Extension;
+        var imageextensions = FileFormat.GetSupportedImageTypeExtensionsList();
+        foreach (var imageExtension in imageextensions)
+        {
+          if (imageExtension == actualextension.ToUpper())
+          {
+            iscorrectformat = true;
+          }
+        }
+        if (iscorrectformat == false)
+        {
+          return productImage;
+        }
+
+        if (input.File is not null)
+        {
+
+          var fileName = input.File.FileName;
+          var blobname = AzureDataKeys.blob_background;
+          string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
+          uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
+          filePath = Path.Combine(uploadsFolder, uniqueName);
+
+          var file = new FileStream(filePath, FileMode.Create);
+          input.File.CopyTo(file);
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          productImage.ImageUrl = await url;
+        }
+      }
+      catch
+      {
+        return productImage;
+      }
+      _repoProductImage.Add(productImage);
+
+
+      return productImage;
     }
 
-    public UserProductImages Edit(UserProductImages division)
+    public async Task<UserProductImages> Edit(FormUserProductImageViewModel input)
     {
-      _db.UserProductImages.Update(division);
-      _db.SaveChanges();
-      return division;
+      ProductImageMapper mapper = new ProductImageMapper();
+      var productImage = mapper.GetProdutImages(input);
+
+      try
+      {
+        var iscorrectformat = false;
+        string uniqueName = null;
+        string filePath = null;
+        FileInfo fi = new FileInfo(input.File.FileName);
+
+        var actualextension = fi.Extension;
+        var imageextensions = FileFormat.GetSupportedImageTypeExtensionsList();
+        foreach (var imageExtension in imageextensions)
+        {
+          if (imageExtension == actualextension.ToUpper())
+          {
+            iscorrectformat = true;
+          }
+        }
+        if (iscorrectformat == false)
+        {
+          return productImage;
+        }
+
+        if (input.File is not null)
+        {
+
+          var fileName = input.File.FileName;
+          var blobname = AzureDataKeys.blob_background;
+          string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
+          uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
+          filePath = Path.Combine(uploadsFolder, uniqueName);
+
+          var file = new FileStream(filePath, FileMode.Create);
+          input.File.CopyTo(file);
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          productImage.ImageUrl = await url;
+        }
+      }
+      catch
+      {
+        return productImage;
+      }
+
+
+      _repoProductImage.Edit(productImage);
+      return productImage;
     }
 
     public UserProductImages Delete(UserProductImages userPImages)
     {
-      _db.UserProductImages.Remove(userPImages);
-      _db.SaveChanges();
-      return userPImages;
+      var answer = _repoProductImage.Delete(userPImages);
+      return answer;
     }
   }
 }

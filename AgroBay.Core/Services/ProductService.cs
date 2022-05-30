@@ -3,6 +3,7 @@ using AgroBay.Core.Data;
 using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services.Interface;
 using AgroBay.Core.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Services
 {
-  public class ProductService
+  public class ProductService : IProductService
   {
 
     private IProductReposiotory _repoProduct;
@@ -23,15 +24,15 @@ namespace AgroBay.Core.Services
     private ISubCategoryRepository _repoSubCat;
     private IDivisions_Repository _repoDiv;
 
-    public ProductService(IProductReposiotory productReposiotory, 
+    public ProductService(IProductReposiotory productReposiotory,
       IHostingEnvironment hostingEnvironment,
       IStorage storage,
       ICategories_Repository categories_Repository,
       ISubCategoryRepository subCategoryRepository,
       IDivisions_Repository divisions_Repository
-      
+
       )
-      
+
     {
       _repoProduct = productReposiotory;
       _env = hostingEnvironment;
@@ -71,7 +72,7 @@ namespace AgroBay.Core.Services
           var dataproduct = Get(item.Id);
           dataProductViewModels.Add(dataproduct);
         }
-        catch 
+        catch
         {
 
         }
@@ -130,7 +131,7 @@ namespace AgroBay.Core.Services
       return product;
     }
 
-    public Product Edit(FormProductViewModel input)
+    public async Task<Product> Edit(FormProductViewModel input)
     {
       ProductMapper productMapper = new ProductMapper();
       var product = productMapper.GetProduct(input);

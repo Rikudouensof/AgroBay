@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AgroBay.Core.Model;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,11 @@ namespace AgroBay.Core.ViewModel
 {
   internal class UserProductViewModel
   {
+  }
+
+  public class DataUserProductViewModel : DataProductViewModel
+  {
+    public UserProduct ProductUser { get; set; }
   }
 
   public class FormUserProductViewModel

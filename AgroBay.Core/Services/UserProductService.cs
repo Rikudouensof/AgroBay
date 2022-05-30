@@ -1,5 +1,11 @@
-﻿using AgroBay.Core.Data;
+﻿using AgroBay.Core.Constants;
+using AgroBay.Core.Data;
+using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
+using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services.Interface;
+using AgroBay.Core.ViewModel;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,47 +14,168 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Services
 {
-  public class UserProductService
+  public class UserProductService : IUserProductService
   {
 
-    private AgroBayDbContext _db;
-    public UserProductService(AgroBayDbContext userProduct)
+    private IHostingEnvironment _env;
+    private IStorage _azStorageService;
+    private IProductService _serviceProduct;
+    private IUserProductRepository _repoUserProduct;
+
+
+    public UserProductService(
+      IHostingEnvironment env, 
+      IStorage storage,
+      IProductService productService,
+      IUserProductRepository userProductRepository
+      )
     {
-      _db = userProduct;
+      _env = env;
+      _azStorageService = storage;
+      _serviceProduct = productService;
+      _repoUserProduct = userProductRepository;
     }
 
 
-    public UserProduct Get(int id)
+    public DataUserProductViewModel Get(int id)
     {
-      var userProduct = _db.UserProducts.First(c => c.id == id);
+      var userProduct = _repoUserProduct.Get(id);
+      var productDetails = _serviceProduct.Get(userProduct.ProductId);
+
+      DataUserProductViewModel vm = new DataUserProductViewModel()
+      {
+        ProductUser = userProduct,
+        Division = productDetails.Division,
+        Category = productDetails.Category,
+        Product = productDetails.Product,
+        SubCategory = productDetails.SubCategory
+      };
+      return vm;
+    }
+
+    public IEnumerable<DataUserProductViewModel> GetAll()
+    {
+      var allUserProduct = _repoUserProduct.GetAll();
+      List<DataUserProductViewModel> vms = new List<DataUserProductViewModel>();
+      foreach (var item in allUserProduct)
+      {
+        try
+        {
+          var vm = Get(item.id);
+          vms.Add(vm);
+        }
+        catch
+        {
+
+        }
+      }
+
+      return vms;
+    }
+
+    public async Task<UserProduct> Add(FormUserProductViewModel input)
+    {
+      UserProductMapper mapper = new UserProductMapper();
+      var userProduct = mapper.GetUserProduct(input);
+
+      try
+      {
+        var iscorrectformat = false;
+        string uniqueName = null;
+        string filePath = null;
+        FileInfo fi = new FileInfo(input.File.FileName);
+
+        var actualextension = fi.Extension;
+        var imageextensions = FileFormat.GetSupportedImageTypeExtensionsList();
+        foreach (var imageExtension in imageextensions)
+        {
+          if (imageExtension == actualextension.ToUpper())
+          {
+            iscorrectformat = true;
+          }
+        }
+        if (iscorrectformat == false)
+        {
+          return userProduct;
+        }
+
+        if (input.File is not null)
+        {
+
+          var fileName = input.File.FileName;
+          var blobname = AzureDataKeys.blob_background;
+          string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
+          uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
+          filePath = Path.Combine(uploadsFolder, uniqueName);
+
+          var file = new FileStream(filePath, FileMode.Create);
+          input.File.CopyTo(file);
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          userProduct.ImageUrl = await url;
+        }
+      }
+      catch
+      {
+        return userProduct;
+      }
+
+      var output = _repoUserProduct.Add(userProduct);
       return userProduct;
     }
 
-    public IEnumerable<UserProduct> GetAll()
+    public async Task<UserProduct> Edit(FormUserProductViewModel input)
     {
-      var userProducts = _db.UserProducts;
-      return userProducts;
-    }
+      UserProductMapper mapper = new UserProductMapper();
+      var userProduct = mapper.GetUserProduct(input);
+      try
+      {
+        var iscorrectformat = false;
+        string uniqueName = null;
+        string filePath = null;
+        FileInfo fi = new FileInfo(input.File.FileName);
 
-    public UserProduct Add(UserProduct userProduct)
-    {
-      _db.UserProducts.Add(userProduct);
-      _db.SaveChanges();
-      return userProduct;
-    }
+        var actualextension = fi.Extension;
+        var imageextensions = FileFormat.GetSupportedImageTypeExtensionsList();
+        foreach (var imageExtension in imageextensions)
+        {
+          if (imageExtension == actualextension.ToUpper())
+          {
+            iscorrectformat = true;
+          }
+        }
+        if (iscorrectformat == false)
+        {
+          return userProduct;
+        }
 
-    public UserProduct Edit(UserProduct userProduct)
-    {
-      _db.UserProducts.Update(userProduct);
-      _db.SaveChanges();
+        if (input.File is not null)
+        {
+
+          var fileName = input.File.FileName;
+          var blobname = AzureDataKeys.blob_background;
+          string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
+          uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
+          filePath = Path.Combine(uploadsFolder, uniqueName);
+
+          var file = new FileStream(filePath, FileMode.Create);
+          input.File.CopyTo(file);
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          userProduct.ImageUrl = await url;
+        }
+      }
+      catch
+      {
+        return userProduct;
+      }
+
+      var output = _repoUserProduct.Edit(userProduct);
       return userProduct;
     }
 
     public UserProduct Delete(UserProduct userProduct)
     {
-      _db.UserProducts.Remove(userProduct);
-      _db.SaveChanges();
-      return userProduct;
+      var output = _repoUserProduct.Delete(userProduct);
+      return output;
     }
   }
 }

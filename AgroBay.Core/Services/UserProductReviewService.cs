@@ -1,5 +1,8 @@
 ﻿using AgroBay.Core.Data;
+using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
+using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,44 +13,61 @@ namespace AgroBay.Core.Services
 {
   public class UserProductReviewService
   {
-    private AgroBayDbContext _db;
-    public UserProductReviewService(AgroBayDbContext agroBayDbContext)
+    private IUserProductReviewRepository _repoReview;
+    private IUserProductRepository _repoProduct;
+    public UserProductReviewService(IUserProductRepository userProductRepository, 
+      IUserProductReviewRepository userProductReviewRepository)
     {
-      _db = agroBayDbContext;
+      _repoProduct = userProductRepository;
+      _repoReview = userProductReviewRepository;
     }
 
 
-    public UserProductReview Get(int id)
+    public DataUserReview Get(int id)
+    { 
+      var review = _repoReview.Get(id);
+      var product = _repoProduct.Get(review.UserProductId);
+      DataUserReview dataUserReview = new DataUserReview()
+      {
+        UserProduct = product,
+        UserProductReview = review
+      };
+      return dataUserReview;
+    }
+
+    public IEnumerable<DataUserReview> GetAll()
     {
-      var review = _db.UserProductReviews.First(c => c.id == id);
+      List<DataUserReview> datareviews = new List<DataUserReview>();
+      var review = _repoReview.GetAll();
+      foreach (var item in review)
+      {
+        var datareview = Get(item.id);
+        datareviews.Add(datareview);
+
+      }
+
+
+      return datareviews;
+    }
+
+    public UserProductReview Add(FormUserProductReviewViewModel input)
+    {
+      ProductRatingMapper productRatingMapper = new ProductRatingMapper();
+      var review = productRatingMapper.GetProductRatingMapper(input);
       return review;
     }
 
-    public IEnumerable<UserProductReview> GetAll()
+    public UserProductReview Edit(FormUserProductReviewViewModel input)
     {
-      var review = _db.UserProductReviews;
-      return review;
-    }
-
-    public UserProductReview Add(UserProductReview review)
-    {
-      _db.UserProductReviews.Add(review);
-      _db.SaveChanges();
-      return review;
-    }
-
-    public UserProductReview Edit(UserProductReview review)
-    {
-      _db.UserProductReviews.Update(review);
-      _db.SaveChanges();
+      ProductRatingMapper productRatingMapper = new ProductRatingMapper();
+      var review = productRatingMapper.GetProductRatingMapper(input);
       return review;
     }
 
     public UserProductReview Delete(UserProductReview review)
     {
-      _db.UserProductReviews.Remove(review);
-      _db.SaveChanges();
-      return review;
+       var answer = _repoReview.Delete(review);
+      return answer;
     }
   }
 }

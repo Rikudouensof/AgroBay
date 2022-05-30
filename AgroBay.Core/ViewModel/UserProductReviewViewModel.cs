@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgroBay.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,16 @@ namespace AgroBay.Core.ViewModel
   internal class UserProductReviewViewModel
   {
   }
+
+
+  public class DataUserReview
+  {
+
+    public UserProductReview UserProductReview { get; set; }
+
+    public UserProduct UserProduct { get; set; }
+  }
+
 
   public class FormUserProductReviewViewModel
   {
@@ -24,7 +35,6 @@ namespace AgroBay.Core.ViewModel
 
     public int UserProductId { get; set; }
 
-    public DateTime DateSet { get; set; }
 
   }
 }
