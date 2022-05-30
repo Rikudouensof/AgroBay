@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AgroBay.Core.Model;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +20,7 @@ namespace AgroBay.Core.ViewModel
     public string Name { get; set; }
 
 
-    public IFormFile Image { get; set; }
+    public IFormFile File { get; set; }
 
     public string Description { get; set; }
 
@@ -27,5 +28,12 @@ namespace AgroBay.Core.ViewModel
     public string ShortDescription { get; set; }
 
     public int SubCategoryId { get; set; }
+  }
+
+  public class DataProductViewModel : DataSubCategoryViewModel
+  {
+    public Product Product { get; set; }
+
+    
   }
 }

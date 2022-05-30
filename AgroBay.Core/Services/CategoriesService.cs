@@ -29,12 +29,12 @@ namespace AgroBay.Core.Services
     }
 
 
-    public DetailedCategoryViewModel Get(int id)
+    public DataCategoryViewModel Get(int id)
     {
 
       var category = _repCat.Get(id);
       var division = _repDiv.Get(category.PurposeDivisionId);
-      DetailedCategoryViewModel categoryViewModel = new DetailedCategoryViewModel()
+      DataCategoryViewModel categoryViewModel = new DataCategoryViewModel()
       {
         Category = category,
         Division = division
@@ -42,14 +42,14 @@ namespace AgroBay.Core.Services
       return categoryViewModel;
     }
 
-    public IEnumerable<DetailedCategoryViewModel> GetAll()
+    public IEnumerable<DataCategoryViewModel> GetAll()
     {
-      List<DetailedCategoryViewModel> listCategoryViewModel = new List<DetailedCategoryViewModel>();
+      List<DataCategoryViewModel> listCategoryViewModel = new List<DataCategoryViewModel>();
       var categories = _repCat.GetAll();
 
       foreach (var item in categories)
       {
-        DetailedCategoryViewModel detailedCategoryViewModel = Get(item.Id);
+        DataCategoryViewModel detailedCategoryViewModel = Get(item.Id);
         listCategoryViewModel.Add(detailedCategoryViewModel);
 
       }

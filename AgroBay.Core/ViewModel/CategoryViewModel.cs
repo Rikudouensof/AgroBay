@@ -10,7 +10,7 @@ namespace AgroBay.Core.ViewModel
 
   }
 
-  public class DetailedCategoryViewModel
+  public class DataCategoryViewModel
   {
     public Category Category { get; set; }
 

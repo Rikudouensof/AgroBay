@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AgroBay.Core.Model;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,12 @@ namespace AgroBay.Core.ViewModel
 
 
     public int CategoriesId { get; set; }
+  }
+
+  public class DataSubCategoryViewModel : DataCategoryViewModel
+  {
+    public SubCategory SubCategory { get; set; }
+
+  
   }
 }
