@@ -12,9 +12,9 @@ namespace AgroBay.Core.Constants
 
     public static string name = "lusatiaestorage";
 
-    public static string key_1 = "SsC5z1uKZZQQR1BeRBW4U5dxo+4N8s/UBlaoxER26ZujNyOGP0/S4hDgDib0boROIKMiaaVyEBlrBK8+hiYBLw==";
+    public static string key_1 = "SsCw==";
 
-    public static string connection_string = "DefaultEndpointsProtocol=https;AccountName=lusatiaestorage;AccountKey=SsC5z1uKZZQQR1BeRBW4U5dxo+4N8s/UBlaoxER26ZujNyOGP0/S4hDgDib0boROIKMiaaVyEBlrBK8+hiYBLw==;EndpointSuffix=core.windows.net";
+    public static string connection_string = "Defaultdows.net";
 
     public static string blob_profile_picture = "profilepictures";
     public static string blob_background = "backgrounds";
