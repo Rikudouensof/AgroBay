@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,13 @@ namespace AgroBay.Core.Repository
 
     public SubCategory Get(int id)
     {
-      var subCategory = _db.SubCategories.First(c => c.Id == id);
+      var subCategory = _db.SubCategories.Include(s => s.Categories).First(c => c.Id == id);
       return subCategory;
     }
 
     public IEnumerable<SubCategory> GetAll()
     {
-      var subCategory = _db.SubCategories;
+      var subCategory = _db.SubCategories.Include(s => s.Categories);
       return subCategory;
     }
 

@@ -8,11 +8,26 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Mapping
 {
-  internal class ProductMapper
+  public class ProductMapper
   {
     public Product GetProduct(FormProductViewModel input)
     {
       Product product = new Product()
+      {
+        Description = input.Description,
+        ShortDescription = input.ShortDescription,
+        Id = input.Id,
+        Name = input.Name,
+        SubCategoryId = input.SubCategoryId
+      };
+
+      return product;
+    }
+
+
+    public FormProductViewModel GetFormProduct(Product input)
+    {
+      FormProductViewModel product = new FormProductViewModel()
       {
         Description = input.Description,
         ShortDescription = input.ShortDescription,

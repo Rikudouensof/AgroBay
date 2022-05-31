@@ -8,6 +8,7 @@ namespace AgroBay.Core.Repository.Interface
     Category DeleteCategory(Category category);
     Category Edit(Category category);
     Category Get(int id);
-    IEnumerable<Category> GetAll();
+    Task<IEnumerable<Category>> GetAll();
+    IEnumerable<Category> GetAllList();
   }
 }

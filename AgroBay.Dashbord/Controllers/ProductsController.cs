@@ -6,163 +6,174 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgroBay.Core.Model;
-using AgroBay.DBTes.Data;
+using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services.Interface;
+using AgroBay.Core.ViewModel;
+using AgroBay.Core.Mapping;
 
 namespace AgroBay.DBTes.Controllers
 {
-    public class ProductsController : Controller
+  public class ProductsController : Controller
+  {
+    private readonly IProductService _prodService;
+    private ISubCategoryRepository _subCatRepo;
+    private IProductReposiotory _prodRepo;
+
+    public ProductsController(IProductService _prodService, IProductReposiotory prodRepo)
     {
-        private readonly ApplicationDbContext _context;
-
-        public ProductsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Products
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Products.Include(p => p.SubCategory);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.SubCategory)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        // GET: Products/Create
-        public IActionResult Create()
-        {
-            ViewData["SubCategoryId"] = new SelectList(_context.SubCategories, "Id", "Id");
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ImageUrl,Description,ShortDescription,SubCategoryId")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SubCategoryId"] = new SelectList(_context.SubCategories, "Id", "Id", product.SubCategoryId);
-            return View(product);
-        }
-
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            ViewData["SubCategoryId"] = new SelectList(_context.SubCategories, "Id", "Id", product.SubCategoryId);
-            return View(product);
-        }
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageUrl,Description,ShortDescription,SubCategoryId")] Product product)
-        {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SubCategoryId"] = new SelectList(_context.SubCategories, "Id", "Id", product.SubCategoryId);
-            return View(product);
-        }
-
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.SubCategory)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Products == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
-            }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductExists(int id)
-        {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+      _prodService = _prodService;
+      _prodRepo = prodRepo;
     }
+
+    // GET: Products
+    public async Task<IActionResult> Index()
+    {
+      var applicationDbContext = _prodRepo.GetAll;
+      return View(applicationDbContext);
+    }
+
+    // GET: Products/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+      if (id == null || _prodRepo.GetAll() == null)
+      {
+        return NotFound();
+      }
+      var Id = (int)id;
+      var product = _prodRepo.Get(Id);
+      if (product == null)
+      {
+        return NotFound();
+      }
+
+      return View(product);
+    }
+
+    // GET: Products/Create
+    public IActionResult Create()
+    {
+      ViewData["SubCategoryId"] = new SelectList(_subCatRepo.GetAll(), "Id", "Name");
+      return View();
+    }
+
+    // POST: Products/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(FormProductViewModel product)
+    {
+      if (ModelState.IsValid)
+      {
+        _prodService.Add(product);
+        return RedirectToAction(nameof(Index));
+      }
+      ViewData["SubCategoryId"] = new SelectList(_subCatRepo.GetAll(), "Id", "Name", product.SubCategoryId);
+      return View(product);
+    }
+
+    // GET: Products/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+      if (id == null || _prodRepo.GetAll() == null)
+      {
+        return NotFound();
+      }
+      int Id = (int)id;
+      var product = _prodRepo.Get(Id);
+      if (product == null)
+      {
+        return NotFound();
+      }
+      ViewData["SubCategoryId"] = new SelectList(_subCatRepo.GetAll(), "Id", "Name", product.SubCategoryId);
+
+      ProductMapper mapper = new ProductMapper();
+      var vm = mapper.GetFormProduct(product);
+
+
+      return View(vm);
+    }
+
+    // POST: Products/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, FormProductViewModel product)
+    {
+      if (id != product.Id)
+      {
+        return NotFound();
+      }
+
+      if (ModelState.IsValid)
+      {
+        try
+        {
+          await _prodService.Edit(product);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+          if (!ProductExists(product.Id))
+          {
+            return NotFound();
+          }
+          else
+          {
+            throw;
+          }
+        }
+        return RedirectToAction(nameof(Index));
+      }
+      ViewData["SubCategoryId"] = new SelectList(_subCatRepo.GetAll(), "Id", "Name", product.SubCategoryId);
+      return View(product);
+    }
+
+    // GET: Products/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+      if (id == null || _prodRepo.GetAll() == null)
+      {
+        return NotFound();
+      }
+      var Id = (int)id;
+      var product = _prodRepo.Get(Id);
+      if (product == null)
+      {
+        return NotFound();
+      }
+
+      return View(product);
+    }
+
+    // POST: Products/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+      if (_prodRepo.GetAll() == null)
+      {
+        return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
+      }
+      var product =  _prodRepo.Get(id);
+      if (product != null)
+      {
+        _prodRepo.Delete(product);
+      }
+
+      return RedirectToAction(nameof(Index));
+    }
+
+    private bool ProductExists(int id)
+    {
+      bool isExist = false;
+      var context = _prodRepo.Get(id);
+      if (context is not null)
+      {
+        isExist = true;
+      }
+
+      return isExist;
+    }
+  }
 }

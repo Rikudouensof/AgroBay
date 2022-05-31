@@ -6,158 +6,173 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgroBay.Core.Model;
-using AgroBay.DBTes.Data;
+using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services.Interface;
+using AgroBay.Core.ViewModel;
 
 namespace AgroBay.DBTes.Controllers
 {
-    public class PurposeDivisionsController : Controller
+  public class PurposeDivisionsController : Controller
+  {
+    private IDivisions_Repository _divRepo;
+    private IDivisions_Service _divService;
+
+
+    public PurposeDivisionsController(IDivisions_Repository divRepo, IDivisions_Service divService)
     {
-        private readonly ApplicationDbContext _context;
-
-        public PurposeDivisionsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: PurposeDivisions
-        public async Task<IActionResult> Index()
-        {
-              return _context.PurposeDivisions != null ? 
-                          View(await _context.PurposeDivisions.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.PurposeDivisions'  is null.");
-        }
-
-        // GET: PurposeDivisions/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.PurposeDivisions == null)
-            {
-                return NotFound();
-            }
-
-            var purposeDivision = await _context.PurposeDivisions
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (purposeDivision == null)
-            {
-                return NotFound();
-            }
-
-            return View(purposeDivision);
-        }
-
-        // GET: PurposeDivisions/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PurposeDivisions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ImageUrl")] PurposeDivision purposeDivision)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(purposeDivision);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(purposeDivision);
-        }
-
-        // GET: PurposeDivisions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.PurposeDivisions == null)
-            {
-                return NotFound();
-            }
-
-            var purposeDivision = await _context.PurposeDivisions.FindAsync(id);
-            if (purposeDivision == null)
-            {
-                return NotFound();
-            }
-            return View(purposeDivision);
-        }
-
-        // POST: PurposeDivisions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageUrl")] PurposeDivision purposeDivision)
-        {
-            if (id != purposeDivision.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(purposeDivision);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PurposeDivisionExists(purposeDivision.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(purposeDivision);
-        }
-
-        // GET: PurposeDivisions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.PurposeDivisions == null)
-            {
-                return NotFound();
-            }
-
-            var purposeDivision = await _context.PurposeDivisions
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (purposeDivision == null)
-            {
-                return NotFound();
-            }
-
-            return View(purposeDivision);
-        }
-
-        // POST: PurposeDivisions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.PurposeDivisions == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.PurposeDivisions'  is null.");
-            }
-            var purposeDivision = await _context.PurposeDivisions.FindAsync(id);
-            if (purposeDivision != null)
-            {
-                _context.PurposeDivisions.Remove(purposeDivision);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool PurposeDivisionExists(int id)
-        {
-          return (_context.PurposeDivisions?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+      _divRepo = divRepo;
+      _divService = divService;
     }
+
+    // GET: PurposeDivisions
+    public async Task<IActionResult> Index()
+    {
+      return _divRepo.GetAll() != null ?
+                  View( _divRepo.GetAll()) :
+                  Problem("Entity set 'Purpose Divisions'  is null.");
+    }
+
+    // GET: PurposeDivisions/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+      if (id == null || _divRepo.GetAll() == null)
+      {
+        return NotFound();
+      }
+
+      var Id = (int)id;
+      var purposeDivision = _divRepo.Get(Id);
+      if (purposeDivision == null)
+      {
+        return NotFound();
+      }
+
+      return View(purposeDivision);
+    }
+
+    // GET: PurposeDivisions/Create
+    public IActionResult Create()
+    {
+      return View();
+    }
+
+    // POST: PurposeDivisions/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(FormPurposeDivisionViewModel formPurposeDivision)
+    {
+      if (ModelState.IsValid)
+      {
+        var output = _divService.Add(formPurposeDivision);
+        return RedirectToAction(nameof(Index));
+      }
+      return View(formPurposeDivision);
+    }
+
+    // GET: PurposeDivisions/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+      if (id == null || _divRepo.GetAll() == null)
+      {
+        return NotFound();
+      }
+      var Id = (int)id;
+      var purposeDivision = _divRepo.Get(Id);
+      if (purposeDivision == null)
+      {
+        return NotFound();
+      }
+      FormPurposeDivisionViewModel vm = new FormPurposeDivisionViewModel()
+      {
+          Id = purposeDivision.Id,
+          Name = purposeDivision.Name
+      };
+      return View(vm);
+    }
+
+    // POST: PurposeDivisions/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, FormPurposeDivisionViewModel formPurposeDivision)
+    {
+      if (id != formPurposeDivision.Id)
+      {
+        return NotFound();
+      }
+
+      if (ModelState.IsValid)
+      {
+        try
+        {
+          await _divService.Add(formPurposeDivision);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+          if (!PurposeDivisionExists(formPurposeDivision.Id))
+          {
+            return NotFound();
+          }
+          else
+          {
+            throw;
+          }
+        }
+        return RedirectToAction(nameof(Index));
+      }
+      return View(formPurposeDivision);
+    }
+
+    // GET: PurposeDivisions/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+      if (id == null || _divRepo.GetAll() == null)
+      {
+        return NotFound();
+      }
+      var Id = (int)id;
+      var purposeDivision = _divRepo.Get(Id);
+      if (purposeDivision == null)
+      {
+        return NotFound();
+      }
+
+      return View(purposeDivision);
+    }
+
+    // POST: PurposeDivisions/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+      if (_divRepo.GetAll() == null)
+      {
+        return Problem("Entity set 'ApplicationDbContext.PurposeDivisions'  is null.");
+      }
+      var purposeDivision = _divRepo.Get(id);
+      if (purposeDivision != null)
+      {
+        _divRepo.Delete(purposeDivision);
+      }
+
+      return RedirectToAction(nameof(Index));
+    }
+
+    private bool PurposeDivisionExists(int id)
+    {
+      bool isExist = false;
+      var context = _divRepo.Get(id);
+      if (context is not null)
+      {
+        isExist = true;
+      }
+
+      return isExist;
+
+
+    }
+  }
 }

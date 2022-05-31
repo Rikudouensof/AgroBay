@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,16 @@ namespace AgroBay.Core.Repository
 
     public Category Get(int id)
     {
-      var category = _db.Categories.First(c => c.Id == id);
+      var category = _db.Categories.Include(c => c.PurposeDivision).First(c => c.Id == id);
       return category;
     }
 
-    public IEnumerable<Category> GetAll()
+    public async Task<IEnumerable<Category>> GetAll()
+    {
+      var categories = _db.Categories.Include(c => c.PurposeDivision);
+      return categories;
+    }
+    public  IEnumerable<Category> GetAllList()
     {
       var categories = _db.Categories;
       return categories;

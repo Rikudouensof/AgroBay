@@ -24,5 +24,20 @@ namespace AgroBay.Core.Mapping
 
       return category;
     }
+
+
+    public FormCategoryViewModel GetFormCategory(Category input)
+    {
+
+      FormCategoryViewModel category = new FormCategoryViewModel()
+      {
+        Description = input.Description,
+        PurposeDivisionId = input.PurposeDivisionId,
+        Name = input.Name,
+        Id = input.Id
+      };
+
+      return category;
+    }
   }
 }
