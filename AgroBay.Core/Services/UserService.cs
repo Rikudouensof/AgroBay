@@ -1,4 +1,5 @@
 ﻿using AgroBay.Core.Constants;
+using AgroBay.Core.Constants.Interface;
 using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
@@ -16,22 +17,25 @@ namespace AgroBay.Core.Services
   public class UserService : IUserService
   {
     private IHostingEnvironment _env;
-    private IStorage _azStorageService;
     private IUserRepository _repoUser;
-
     private IUserProductService _serviceUsSer;
+    private IAzureDataKeys _azureDataKeys;
+    private IStorageService _azStorageService;
 
     public UserService(
       IHostingEnvironment env,
-      IStorage storage,
       IUserRepository userRepository,
-      IUserProductService userProduct
+      IUserProductService userProduct,
+       IStorageService storage,
+      IAzureDataKeys azureDataKeys
       )
     {
       _env = env;
       _azStorageService = storage;
       _repoUser = userRepository;
       _serviceUsSer = userProduct;
+      _azStorageService = storage;
+      _azureDataKeys = azureDataKeys;
     }
 
     public DataUserViewModel Get(string id)
@@ -104,14 +108,14 @@ namespace AgroBay.Core.Services
         {
 
           var fileName = user.File.FileName;
-          var blobname = AzureDataKeys.blob_background;
+          var blobname = _azureDataKeys.GetStorageArguement().ProfilePicture;
           string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
           uniqueName = Guid.NewGuid().ToString() + "_" + user.File.FileName;
           filePath = Path.Combine(uploadsFolder, uniqueName);
 
           var file = new FileStream(filePath, FileMode.Create);
           user.File.CopyTo(file);
-          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
           dbUser.ImageUrl = await url;
         }
       }

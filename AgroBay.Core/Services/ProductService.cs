@@ -1,4 +1,5 @@
 ﻿using AgroBay.Core.Constants;
+using AgroBay.Core.Constants.Interface;
 using AgroBay.Core.Data;
 using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
@@ -19,27 +20,30 @@ namespace AgroBay.Core.Services
 
     private IProductReposiotory _repoProduct;
     private IHostingEnvironment _env;
-    private IStorage _azStorageService;
     private ICategories_Repository _repoCat;
     private ISubCategoryRepository _repoSubCat;
     private IDivisions_Repository _repoDiv;
+    private IAzureDataKeys _azureDataKeys;
+    private IStorageService _azStorageService;
+
 
     public ProductService(IProductReposiotory productReposiotory,
       IHostingEnvironment hostingEnvironment,
-      IStorage storage,
       ICategories_Repository categories_Repository,
       ISubCategoryRepository subCategoryRepository,
-      IDivisions_Repository divisions_Repository
-
+      IDivisions_Repository divisions_Repository,
+      IStorageService storage,
+      IAzureDataKeys azureDataKeys
       )
 
     {
       _repoProduct = productReposiotory;
       _env = hostingEnvironment;
-      _azStorageService = storage;
       _repoCat = categories_Repository;
       _repoSubCat = subCategoryRepository;
       _repoDiv = divisions_Repository;
+      _azStorageService = storage;
+      _azureDataKeys = azureDataKeys;
     }
 
 
@@ -110,14 +114,14 @@ namespace AgroBay.Core.Services
         {
 
           var fileName = input.File.FileName;
-          var blobname = AzureDataKeys.blob_background;
+          var blobname = _azureDataKeys.GetStorageArguement().Pictures;
           string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
           uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
           filePath = Path.Combine(uploadsFolder, uniqueName);
 
           var file = new FileStream(filePath, FileMode.Create);
           input.File.CopyTo(file);
-          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
           product.ImageUrl = await url;
         }
       }
@@ -161,14 +165,14 @@ namespace AgroBay.Core.Services
         {
 
           var fileName = input.File.FileName;
-          var blobname = AzureDataKeys.blob_background;
+          var blobname = _azureDataKeys.GetStorageArguement().Pictures;
           string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
           uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
           filePath = Path.Combine(uploadsFolder, uniqueName);
 
           var file = new FileStream(filePath, FileMode.Create);
           input.File.CopyTo(file);
-          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
           product.ImageUrl = await url;
         }
       }

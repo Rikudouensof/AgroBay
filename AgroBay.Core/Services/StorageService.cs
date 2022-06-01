@@ -1,4 +1,6 @@
-﻿using Azure.Storage;
+﻿using AgroBay.Core.Constants.Interface;
+using AgroBay.Core.Services.Interface;
+using Azure.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -10,70 +12,75 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Services
 {
-    public interface IStorage
+
+
+  public class StorageService : IStorageService
+  {
+    private IAzureDataKeys _storageArguement;
+    public StorageService(IAzureDataKeys azureDataKeys)
     {
-        Task<string> DeleteFile(StorageArguement storageArguement, string fileName);
-        Task<string> UploadFileToStorage(Stream fileStream, string fileName, string blobName, StorageArguement storageArguement);
+      _storageArguement = azureDataKeys;
+
     }
 
-    public class StorageService : IStorage
+    public async Task<string> UploadFileToStorage(Stream fileStream, string fileName,
+                                                 string blobName)
     {
 
-        public async Task<string> UploadFileToStorage(Stream fileStream, string fileName,
-                                                     string blobName, StorageArguement storageArguement)
-        {
-            // Create a URI to the blob
-            Uri blobUri = new Uri("https://" +
-                                  storageArguement.AzureContainerName +
-                                  ".blob.core.windows.net/" +
-                                  blobName +
-                                  "/" + fileName);
+      var storageArguement = _storageArguement.GetStorageArguement();
 
-            // Create StorageSharedKeyCredentials object by reading
-            // the values from the configuration (appsettings.json)
-            StorageSharedKeyCredential storageCredentials =
-                new StorageSharedKeyCredential(storageArguement.AzureContainerName, storageArguement.AzureNameKeyKey);
+      // Create a URI to the blob
+      Uri blobUri = new Uri("https://" +
+                            storageArguement.AzureContainerName +
+                            ".blob.core.windows.net/" +
+                            blobName +
+                            "/" + fileName);
 
-            // Create the blob client.
-            BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
-            fileStream.Position = 0;
-            // Upload the file
-            await blobClient.UploadAsync(fileStream);
+      // Create StorageSharedKeyCredentials object by reading
+      // the values from the configuration (appsettings.json)
+      StorageSharedKeyCredential storageCredentials =
+          new StorageSharedKeyCredential(storageArguement.AzureContainerName, storageArguement.AzureNameKeyKey);
 
+      // Create the blob client.
+      BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
+      fileStream.Position = 0;
+      // Upload the file
+      await blobClient.UploadAsync(fileStream);
 
 
-            if (await Task.FromResult(true))
-            {
-                return blobUri.AbsoluteUri;
-            }
-            else
-            {
-                return "upload failed";
-            }
-        }
 
-
-        public async Task<string> DeleteFile(StorageArguement storageArguement, string fileName)
-        {
-            bool isSucessful = false;
-
-            string blobstorageconnection = storageArguement.ConnectionString;
-            string strContainerName = storageArguement.AzureContainerName;
-
-
-            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobstorageconnection);
-            CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-
-            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
-            var blob = cloudBlobContainer.GetBlobReference(fileName);
-            var result = await blob.DeleteIfExistsAsync();
-            return $"{fileName}, is deleted sucessfully";
-
-
-        }
+      if (await Task.FromResult(true))
+      {
+        return blobUri.AbsoluteUri;
+      }
+      else
+      {
+        return "upload failed";
+      }
     }
 
-    public class StorageArguement
+
+    public async Task<string> DeleteFile(StorageArguement storageArguement, string fileName)
+    {
+      bool isSucessful = false;
+
+      string blobstorageconnection = storageArguement.ConnectionString;
+      string strContainerName = storageArguement.AzureContainerName;
+
+
+      CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobstorageconnection);
+      CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+
+      CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
+      var blob = cloudBlobContainer.GetBlobReference(fileName);
+      var result = await blob.DeleteIfExistsAsync();
+      return $"{fileName}, is deleted sucessfully";
+
+
+    }
+  }
+
+  public class StorageArguement
   {
     public string AzureContainerName { get; set; }
     public string AzureNameKeyKey { get; set; }

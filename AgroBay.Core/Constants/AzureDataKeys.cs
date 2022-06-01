@@ -1,4 +1,6 @@
-﻿using AgroBay.Core.Services;
+﻿using AgroBay.Core.Constants.Interface;
+using AgroBay.Core.Services;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,33 +9,33 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Constants
 {
-  public class AzureDataKeys
+  public class AzureDataKeys : IAzureDataKeys
   {
+    private readonly IConfiguration _config;
+    public AzureDataKeys(IConfiguration configuration)
+    {
+      _config = configuration;
+    }
 
-    public static string name = "lusatiaestorage";
 
-    public static string key_1 = "SsCw==";
 
-    public static string connection_string = "Defaultdows.net";
-
-    public static string blob_profile_picture = "profilepictures";
-    public static string blob_background = "backgrounds";
-    public static string blob_files = "files";
-
-    public static StorageArguement GetStorageArguement()
+    public StorageArguement GetStorageArguement()
     {
       StorageArguement storage = new StorageArguement()
       {
-        AzureContainerName = name,
-        AzureNameKeyKey = key_1,
-        ConnectionString = connection_string,
-        Pictures = blob_background,
-        ProfilePicture = blob_profile_picture, 
-        Video = blob_files,
+        AzureContainerName = _config["AzureStorage:Name"],
+        AzureNameKeyKey = _config["AzureStorage:Key"],
+        ConnectionString = _config["AzureStorage:ConnString"],
+        Pictures = _config["AzureStorage:Picture"],
+        ProfilePicture = _config["AzureStorage:ProfilePicture"],
+        Video = _config["AzureStorage:Files"],
       };
       return storage;
     }
+
+
+
   }
 
-  
+
 }

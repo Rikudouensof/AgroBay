@@ -1,4 +1,7 @@
 using AgroBay.Core.Data;
+using AgroBay.Core.Dependency;
+using AgroBay.Core.Repository;
+using AgroBay.Core.Repository.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +17,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
   .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AgroBayDbContext>();
 builder.Services.AddControllersWithViews();
+
+//Add Core Dependency
+builder.Services.ImplementAgroBayCoreDependency();
+
 
 var app = builder.Build();
 

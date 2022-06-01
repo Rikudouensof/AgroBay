@@ -1,4 +1,5 @@
 ﻿using AgroBay.Core.Constants;
+using AgroBay.Core.Constants.Interface;
 using AgroBay.Core.Data;
 using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
@@ -18,17 +19,20 @@ namespace AgroBay.Core.Services
   {
 
     private IHostingEnvironment _env;
-    private IStorage _azStorageService;
     private IUserProductImageRepository _repoProductImage;
     private IUserProductRepository _repoUserProduct;
+    private IAzureDataKeys _azureDataKeys;
+    private IStorageService _azStorageService;
 
-    public UserProductImageService(IStorage azStorageService,
+
+    public UserProductImageService(
       IHostingEnvironment hostingEnvironment,
       IUserProductRepository userProductRepository,
-      IUserProductImageRepository userProductImageRepository
+      IUserProductImageRepository userProductImageRepository,
+       IStorageService storage,
+      IAzureDataKeys azureDataKeys
       )
     {
-      _azStorageService = azStorageService;
       _env = hostingEnvironment;
       _repoProductImage = userProductImageRepository;
       _repoUserProduct = userProductRepository;
@@ -99,14 +103,14 @@ namespace AgroBay.Core.Services
         {
 
           var fileName = input.File.FileName;
-          var blobname = AzureDataKeys.blob_background;
+          var blobname = _azureDataKeys.GetStorageArguement().Pictures;
           string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
           uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
           filePath = Path.Combine(uploadsFolder, uniqueName);
 
           var file = new FileStream(filePath, FileMode.Create);
           input.File.CopyTo(file);
-          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
           productImage.ImageUrl = await url;
         }
       }
@@ -150,14 +154,14 @@ namespace AgroBay.Core.Services
         {
 
           var fileName = input.File.FileName;
-          var blobname = AzureDataKeys.blob_background;
+          var blobname = _azureDataKeys.GetStorageArguement().Pictures;
           string uploadsFolder = Path.Combine(_env.WebRootPath, "Uploads");
           uniqueName = Guid.NewGuid().ToString() + "_" + input.File.FileName;
           filePath = Path.Combine(uploadsFolder, uniqueName);
 
           var file = new FileStream(filePath, FileMode.Create);
           input.File.CopyTo(file);
-          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname, AzureDataKeys.GetStorageArguement());
+          var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
           productImage.ImageUrl = await url;
         }
       }
