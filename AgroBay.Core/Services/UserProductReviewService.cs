@@ -2,6 +2,7 @@
 using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services.Interface;
 using AgroBay.Core.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Services
 {
-  public class UserProductReviewService
+  public class UserProductReviewService : IUserProductReviewService
   {
     private IUserProductReviewRepository _repoReview;
     private IUserProductRepository _repoProduct;
-    public UserProductReviewService(IUserProductRepository userProductRepository, 
+    public UserProductReviewService(IUserProductRepository userProductRepository,
       IUserProductReviewRepository userProductReviewRepository)
     {
       _repoProduct = userProductRepository;
@@ -24,7 +25,7 @@ namespace AgroBay.Core.Services
 
 
     public DataUserReview Get(int id)
-    { 
+    {
       var review = _repoReview.Get(id);
       var product = _repoProduct.Get(review.UserProductId);
       DataUserReview dataUserReview = new DataUserReview()
@@ -66,7 +67,7 @@ namespace AgroBay.Core.Services
 
     public UserProductReview Delete(UserProductReview review)
     {
-       var answer = _repoReview.Delete(review);
+      var answer = _repoReview.Delete(review);
       return answer;
     }
   }

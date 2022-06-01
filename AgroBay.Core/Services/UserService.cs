@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Services
 {
-  public class UserService
+  public class UserService : IUserService
   {
     private IHostingEnvironment _env;
     private IStorage _azStorageService;
@@ -70,7 +70,7 @@ namespace AgroBay.Core.Services
 
 
 
-    public async  Task<User> Edit(FormUserViewModel user)
+    public async Task<User> Edit(FormUserViewModel user)
     {
       var dbUser = _repoUser.Get(user.Id);
       dbUser.About = user.About;

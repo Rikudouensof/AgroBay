@@ -15,6 +15,18 @@ namespace AgroBay.Core.Mapping
       UserProductImages images = new UserProductImages()
       {
         DateAdded = DateTime.Now,
+        UserProductId = input.UserProductId,
+        
+      };
+
+      return images;
+    }
+
+
+    public FormUserProductImageViewModel GetFormProdutImages(UserProductImages input)
+    {
+      FormUserProductImageViewModel images = new FormUserProductImageViewModel()
+      {
         UserProductId = input.UserProductId
       };
 

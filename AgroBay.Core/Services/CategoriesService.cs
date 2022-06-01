@@ -45,7 +45,7 @@ namespace AgroBay.Core.Services
         public IEnumerable<DataCategoryViewModel> GetAll()
         {
             List<DataCategoryViewModel> listCategoryViewModel = new List<DataCategoryViewModel>();
-            var categories = _repCat.GetAll();
+            var categories = _repCat.GetAllList();
 
             foreach (var item in categories)
             {

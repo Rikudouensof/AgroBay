@@ -9,5 +9,7 @@ namespace AgroBay.Core.Repository.Interface
     UserAdress Edit(UserAdress address);
     UserAdress Get(int id);
     IEnumerable<UserAdress> GetAll();
+
+    IEnumerable<UserAdress> GetAllList();
   }
 }

@@ -32,6 +32,12 @@ namespace AgroBay.Core.Repository
       return product;
     }
 
+    public IEnumerable<Product> GetAllList()
+    {
+      var product = _db.Products;
+      return product;
+    }
+
     public Product Add(Product product)
     {
       _db.Products.Add(product);

@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,16 +22,21 @@ namespace AgroBay.Core.Repository
 
     public UserProduct Get(int id)
     {
-      var userProduct = _db.UserProducts.First(c => c.id == id);
+      var userProduct = _db.UserProducts.Include(u => u.Product).Include(u => u.User).First(c => c.id == id);
       return userProduct;
     }
 
     public IEnumerable<UserProduct> GetAll()
     {
-      var userProducts = _db.UserProducts;
+      var userProducts = _db.UserProducts.Include(u => u.Product).Include(u => u.User);
       return userProducts;
     }
 
+    public IEnumerable<UserProduct> GetAllList()
+    {
+      var userProducts = _db.UserProducts;
+      return userProducts;
+    }
     public UserProduct Add(UserProduct userProduct)
     {
       _db.UserProducts.Add(userProduct);

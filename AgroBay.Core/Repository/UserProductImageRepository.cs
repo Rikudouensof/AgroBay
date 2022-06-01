@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,17 @@ namespace AgroBay.Core.Repository
 
     public UserProductImages Get(int id)
     {
-      var userPImages = _db.UserProductImages.First(c => c.id == id);
+      var userPImages = _db.UserProductImages.Include(u => u.UserProduct).First(c => c.id == id);
       return userPImages;
     }
 
     public IEnumerable<UserProductImages> GetAll()
+    {
+      var userPImages = _db.UserProductImages.Include(u => u.UserProduct);
+      return userPImages;
+    }
+
+    public IEnumerable<UserProductImages> GetAllList()
     {
       var userPImages = _db.UserProductImages;
       return userPImages;

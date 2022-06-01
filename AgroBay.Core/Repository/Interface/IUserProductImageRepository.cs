@@ -9,5 +9,6 @@ namespace AgroBay.Core.Repository.Interface
     UserProductImages Edit(UserProductImages division);
     UserProductImages Get(int id);
     IEnumerable<UserProductImages> GetAll();
+    IEnumerable<UserProductImages> GetAllList();
   }
 }

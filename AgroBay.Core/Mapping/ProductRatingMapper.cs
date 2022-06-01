@@ -8,13 +8,28 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Mapping
 {
-  internal class ProductRatingMapper
+  public class ProductRatingMapper
   {
     public UserProductReview GetProductRatingMapper(FormUserProductReviewViewModel input)
     {
       UserProductReview review = new UserProductReview()
       {
         DateSet = DateTime.Now,
+        Description = input.Description,
+        id = input.id,
+        Rating = input.Rating,
+        Title = input.Title,
+        UserProductId = input.UserProductId
+      };
+
+      return review;
+    }
+
+
+    public FormUserProductReviewViewModel GetFormProductRatingMapper(UserProductReview input)
+    {
+      FormUserProductReviewViewModel review = new FormUserProductReviewViewModel()
+      {
         Description = input.Description,
         id = input.id,
         Rating = input.Rating,

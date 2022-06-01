@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,17 @@ namespace AgroBay.Core.Repository
 
     public UserAdress Get(int id)
     {
-      var address = _db.UserAdresses.First(c => c.Id == id);
+      var address = _db.UserAdresses.Include(u => u.User).First(c => c.Id == id);
       return address;
     }
 
     public IEnumerable<UserAdress> GetAll()
+    {
+      var address = _db.UserAdresses.Include(u => u.User);
+      return address;
+    }
+
+    public IEnumerable<UserAdress> GetAllList()
     {
       var address = _db.UserAdresses;
       return address;

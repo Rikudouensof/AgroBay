@@ -9,5 +9,7 @@ namespace AgroBay.Core.Repository.Interface
     UserProduct Edit(UserProduct userProduct);
     UserProduct Get(int id);
     IEnumerable<UserProduct> GetAll();
+
+    IEnumerable<UserProduct> GetAllList();
   }
 }

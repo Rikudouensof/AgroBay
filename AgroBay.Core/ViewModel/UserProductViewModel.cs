@@ -40,7 +40,7 @@ namespace AgroBay.Core.ViewModel
 
     public bool isSold { get; set; }
 
-
+    public string Name { get; set; }
 
     public string Price { get; set; }
   }

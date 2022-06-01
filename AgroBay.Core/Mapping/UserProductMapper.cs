@@ -21,6 +21,24 @@ namespace AgroBay.Core.Mapping
         ProductId = input.ProductId,
         Price = input.Price,
         UserId = input.UserId,
+        Name = input.Name
+
+      };
+
+      return userProduct;
+    }
+
+    public FormUserProductViewModel GetFormUserProduct(UserProduct input)
+    {
+      FormUserProductViewModel userProduct = new FormUserProductViewModel()
+      {
+        AvailableQuantity = input.AvailableQuantity,
+        id = input.id,
+        isSold = input.isSold,
+        ProductId = input.ProductId,
+        Price = input.Price,
+        UserId = input.UserId,
+        Name = input.Name
 
       };
 
@@ -29,7 +47,7 @@ namespace AgroBay.Core.Mapping
 
 
 
-    
+
   }
 
 }

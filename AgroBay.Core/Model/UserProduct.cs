@@ -18,7 +18,7 @@ namespace AgroBay.Core.Model
     public User User { get; set; }
     public string UserId { get; set; }
 
-
+    public string Name { get; set; }
 
     public string AvailableQuantity { get; set; }
 

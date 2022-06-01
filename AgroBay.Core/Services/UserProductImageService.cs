@@ -3,6 +3,7 @@ using AgroBay.Core.Data;
 using AgroBay.Core.Mapping;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using AgroBay.Core.Services.Interface;
 using AgroBay.Core.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace AgroBay.Core.Services
 {
-  public class UserProductImageService
+  public class UserProductImageService : IUserProductImageService
   {
 
     private IHostingEnvironment _env;
@@ -21,7 +22,7 @@ namespace AgroBay.Core.Services
     private IUserProductImageRepository _repoProductImage;
     private IUserProductRepository _repoUserProduct;
 
-    public UserProductImageService( IStorage azStorageService,
+    public UserProductImageService(IStorage azStorageService,
       IHostingEnvironment hostingEnvironment,
       IUserProductRepository userProductRepository,
       IUserProductImageRepository userProductImageRepository
@@ -40,7 +41,7 @@ namespace AgroBay.Core.Services
       var userProduct = _repoUserProduct.Get(id);
       DataProductImageViewModel userPImages = new DataProductImageViewModel()
       {
-        ProductImage = productImage, 
+        ProductImage = productImage,
         UserProduct = userProduct
       };
       return userPImages;
@@ -58,7 +59,7 @@ namespace AgroBay.Core.Services
           var viewmodel = Get(item.id);
           poductImageList.Add(viewmodel);
         }
-        catch 
+        catch
         {
 
         }
