@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,14 @@ namespace AgroBay.Core.Repository
     public Message Get(int id)
     {
       var message = _db.Messages.First(c => c.Id == id);
+      _db.Entry<Message>(message).State = EntityState.Detached;
       return message;
     }
 
     public IEnumerable<Message> GetAll()
     {
       var message = _db.Messages;
+      _db.Entry<IEnumerable<Message>>(message).State = EntityState.Detached;
       return message;
     }
 

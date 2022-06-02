@@ -1,6 +1,7 @@
 ﻿using AgroBay.Core.Data;
 using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,14 @@ namespace AgroBay.Core.Repository
     public PurposeDivision Get(int id)
     {
       var division = _db.PurposeDivisions.First(c => c.Id == id);
+      _db.Entry<PurposeDivision>(division).State = EntityState.Detached;
       return division;
     }
 
     public IEnumerable<PurposeDivision> GetAll()
     {
       var division = _db.PurposeDivisions;
+      _db.Entry<IEnumerable<PurposeDivision>>(division).State = EntityState.Detached;
       return division;
     }
 

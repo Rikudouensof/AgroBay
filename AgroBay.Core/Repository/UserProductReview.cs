@@ -22,12 +22,14 @@ namespace AgroBay.Core.Repository
     public UserProductReview Get(int id)
     {
       var review = _db.UserProductReviews.Include(u => u.UserProduct).First(c => c.id == id);
+      _db.Entry<UserProductReview>(review).State = EntityState.Detached;
       return review;
     }
 
     public IEnumerable<UserProductReview> GetAll()
     {
       var review = _db.UserProductReviews.Include(u => u.UserProduct);
+      _db.Entry<IEnumerable<UserProductReview>>(review).State = EntityState.Detached;
       return review;
     }
 

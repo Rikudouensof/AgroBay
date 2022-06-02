@@ -22,12 +22,15 @@ namespace AgroBay.Core.Repository
     public Category Get(int id)
     {
       var category = _db.Categories.Include(c => c.PurposeDivision).First(c => c.Id == id);
+      _db.Entry<Category>(category).State = EntityState.Detached;
       return category;
     }
 
     public async Task<IEnumerable<Category>> GetAll()
     {
       var categories = _db.Categories.Include(c => c.PurposeDivision);
+      
+      _db.Entry<IEnumerable<Category>>(categories).State = EntityState.Detached;
       return categories;
     }
     public  IEnumerable<Category> GetAllList()

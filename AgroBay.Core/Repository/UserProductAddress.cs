@@ -22,12 +22,14 @@ namespace AgroBay.Core.Repository
     public UserAdress Get(int id)
     {
       var address = _db.UserAdresses.Include(u => u.User).First(c => c.Id == id);
+      _db.Entry<UserAdress>(address).State = EntityState.Detached;
       return address;
     }
 
     public IEnumerable<UserAdress> GetAll()
     {
       var address = _db.UserAdresses.Include(u => u.User);
+      _db.Entry<IEnumerable<UserAdress>>(address).State = EntityState.Detached;
       return address;
     }
 
