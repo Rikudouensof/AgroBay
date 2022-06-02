@@ -27,8 +27,9 @@ namespace AgroBay.DBTes.Controllers
     // GET: PurposeDivisions
     public async Task<IActionResult> Index()
     {
+      IEnumerable<PurposeDivision> purposeDivisions = _divRepo.GetAll();
       return _divRepo.GetAll() != null ?
-                  View( _divRepo.GetAll()) :
+                  View(purposeDivisions) :
                   Problem("Entity set 'Purpose Divisions'  is null.");
     }
 
@@ -112,7 +113,7 @@ namespace AgroBay.DBTes.Controllers
         }
         catch (DbUpdateConcurrencyException)
         {
-          if (!PurposeDivisionExists(formPurposeDivision.Id))
+          if (!PurposeDivisionExists((int)formPurposeDivision.Id))
           {
             return NotFound();
           }

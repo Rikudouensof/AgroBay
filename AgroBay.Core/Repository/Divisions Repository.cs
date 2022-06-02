@@ -30,10 +30,10 @@ namespace AgroBay.Core.Repository
       return division;
     }
 
-    public PurposeDivision Add(PurposeDivision division)
+    public async Task<PurposeDivision> Add(PurposeDivision division)
     {
-      _db.PurposeDivisions.Add(division);
-      _db.SaveChanges();
+      await _db.PurposeDivisions.AddAsync(division);
+      await _db.SaveChangesAsync();
       return division;
     }
 

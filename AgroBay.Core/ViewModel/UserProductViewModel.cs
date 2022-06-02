@@ -21,27 +21,37 @@ namespace AgroBay.Core.ViewModel
   public class FormUserProductViewModel
   {
 
-    [Key]
+    
     public int id { get; set; }
 
+    [Display(Name = "Product")]
+    [Required]
     public int ProductId { get; set; }
 
+    [Display(Name = "User")]
+    [Required]
     public string UserId { get; set; }
 
-
-
+    [Display(Name = "Avaliable Quantity")]
+    [Required]
     public string AvailableQuantity { get; set; }
 
-
-
+    [Display(Name = "Upload File")]
+    [Required]
     public IFormFile File { get; set; }
 
 
 
+    [Display(Name = "IS Sold")]
+    [Required]
     public bool isSold { get; set; }
 
+    [Display(Name = "Product Name")]
+    [Required]
     public string Name { get; set; }
 
+    [Display(Name = "Price per Unit")]
+    [Required]
     public string Price { get; set; }
   }
 }

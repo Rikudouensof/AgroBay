@@ -12,26 +12,40 @@ namespace AgroBay.Core.Model
     [Key]
     public int id { get; set; }
 
-    public Product Product { get; set; }
+
+    
+    public virtual Product Product { get; set; }
+
+
+    [Display(Name = "Product")]
+    [Required]
     public int ProductId { get; set; }
 
-    public User User { get; set; }
+
+
+    public virtual User User { get; set; }
+
+    [Display(Name = "User")]
+    [Required]
     public string UserId { get; set; }
 
+    [Required]
     public string Name { get; set; }
 
+    [Display(Name = "Available Quantity")]
+    [Required]
     public string AvailableQuantity { get; set; }
 
-
-
+    [Display(Name = "Image Link")]
+    [Required]
     public string ImageUrl { get; set; }
 
-
-
+    [Display(Name = "Is Sold")]
+    [Required]
     public bool isSold { get; set; }
 
-
-
+    [Display(Name = "Price Per Unit")]
+    [Required]
     public string Price { get; set; }
   }
 }

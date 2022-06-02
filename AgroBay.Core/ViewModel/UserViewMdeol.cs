@@ -25,16 +25,20 @@ namespace AgroBay.Core.ViewModel
   {
     public string Id { get; set; }
 
-    
 
+    [Display(Name = "Email Address")]
     [EmailAddress]
     public string Email { get; set; }
 
+    [Display(Name = "Display Name")]
     [Required]
     public string DisplayName { get; set; }
-    
+
+
+    [Display(Name = "Phone Number")]
     [Required]
     public string PhoneNumber { get; set; }
+
 
 
     [Display(Name = "Last Name")]
@@ -48,11 +52,11 @@ namespace AgroBay.Core.ViewModel
     [Display(Name = "First Name")]
     public string FirstName { get; set; }
 
-
-
+    [Display(Name = "Upload File")]
+    [Required]
     public IFormFile File { get; set; }
 
-
+    [Required]
     [Display(Name = "Headquaters Address")]
     public string AddressInfoId { get; set; }
 

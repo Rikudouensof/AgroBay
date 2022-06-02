@@ -16,8 +16,16 @@ namespace AgroBay.Core.Mapping
       PurposeDivision purposeDivision = new PurposeDivision()
       {
         Name = input.Name,
-        Id = input.Id
+        Id = 0
       };
+      try
+      {
+        purposeDivision.Id = (int)input.Id;
+      }
+      catch 
+      {
+
+      }
 
       return purposeDivision;
     }

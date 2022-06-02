@@ -18,22 +18,27 @@ namespace AgroBay.Core.ViewModel
 
   }
 
- 
+
   public class FormCategoryViewModel
   {
 
     public int Id { get; set; }
 
+    [Display(Name="Name")]
+    [Required]
     public string Name { get; set; }
 
-
+    [Display(Name = "Description")]
+    [Required]
     public string Description { get; set; }
 
+    [Display(Name = "Division")]
+    [Required]
+    public int PurposeDivisionId { get; set; }
 
 
-        public int PurposeDivisionId { get; set; }
-
-        [Display(Name ="Image")]
-        public IFormFile File { get; set; }
-    }
+    [Required]
+    [Display(Name = "Image")]
+    public IFormFile File { get; set; }
+  }
 }

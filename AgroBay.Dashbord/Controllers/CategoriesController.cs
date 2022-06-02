@@ -29,7 +29,7 @@ namespace AgroBay.DBTes.Controllers
     // GET: Categories
     public async Task<IActionResult> Index()
     {
-      var applicationDbContext = _catRepo.GetAll();
+      IEnumerable<Category> applicationDbContext = await _catRepo.GetAll();
       return View(applicationDbContext);
     }
 

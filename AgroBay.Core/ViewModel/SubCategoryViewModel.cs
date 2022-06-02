@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,18 @@ namespace AgroBay.Core.ViewModel
 
     public int Id { get; set; }
 
+    [Required]
     public string Name { get; set; }
 
+    [Required]
     public string Description { get; set; }
 
-
+    [Display(Name = "File")]
+    [Required]
     public IFormFile File { get; set; }
 
-
+    [Display(Name = "Category Id")]
+    [Required]
     public int CategoriesId { get; set; }
   }
 

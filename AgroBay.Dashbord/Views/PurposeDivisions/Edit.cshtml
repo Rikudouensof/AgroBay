@@ -1,7 +1,8 @@
-﻿@model AgroBay.Core.Model.PurposeDivision
+﻿@model AgroBay.Core.ViewModel.FormPurposeDivisionViewModel;
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_DashbordLayout.cshtml";
 }
 
 <h1>Edit</h1>
@@ -18,10 +19,10 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+           <div class="form-group">
+                <label asp-for="File" class="control-label"></label>
+                <input asp-for="File" class="form-control" />
+                <span asp-validation-for="File" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

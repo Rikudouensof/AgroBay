@@ -17,16 +17,25 @@ namespace AgroBay.Core.ViewModel
   {
     public int Id { get; set; }
 
+    [Required]
     public string Name { get; set; }
 
-
+    [Display(Name = "File")]
+    [Required]
     public IFormFile File { get; set; }
 
+
+    [Display(Name = "File")]
+    [Required]
     public string Description { get; set; }
 
+    [Display(Name = "Short Description")]
+    [Required]
     [MaxLength(128), MinLength(25)]
     public string ShortDescription { get; set; }
 
+    [Display(Name = "Sub Category")]
+    [Required]
     public int SubCategoryId { get; set; }
   }
 

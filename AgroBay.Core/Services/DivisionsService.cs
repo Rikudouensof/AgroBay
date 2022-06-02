@@ -50,8 +50,7 @@ namespace AgroBay.Core.Services
         {
             DivisionMapper divMaper = new DivisionMapper();
             var division = divMaper.GetDivision(input);
-            try
-            {
+          
                 var iscorrectformat = false;
                 string uniqueName = null;
                 string filePath = null;
@@ -85,15 +84,11 @@ namespace AgroBay.Core.Services
                     var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
                     division.ImageUrl = await url;
                 }
-            }
-            catch
-            {
-                return division;
-            }
+            
 
 
-            _repDiv.Add(division);
-            return division;
+           var output = await  _repDiv.Add(division);
+            return output;
         }
 
         public async Task<PurposeDivision> Edit(FormPurposeDivisionViewModel input)

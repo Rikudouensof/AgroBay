@@ -35,7 +35,7 @@ namespace AgroBay.Core.Model
     public string FirstName { get; set; }
 
 
-
+    [Display(Name = "Image Link")]
     public string ImageUrl { get; set; }
 
 
@@ -51,6 +51,7 @@ namespace AgroBay.Core.Model
     [Display(Name = "Last Name")]
     public DateTime LastOnline { get; set; }
 
+    [Display(Name = "About")]
     public string About { get; set; }
 
     public virtual ICollection<Message> Messages { get; set; }
