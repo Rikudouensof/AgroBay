@@ -28,15 +28,29 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<PurposeDivision> GetAll()
     {
-      var division = _db.PurposeDivisions;
-      _db.Entry<IEnumerable<PurposeDivision>>(division).State = EntityState.Detached;
+      var division = _db.PurposeDivisions.OrderBy(m => m.Name);
+      foreach (var item in division)
+      {
+        _db.Entry<PurposeDivision>(item).State = EntityState.Detached;
+      }
       return division;
     }
 
-    public async Task<PurposeDivision> Add(PurposeDivision division)
+    public  PurposeDivision Add(PurposeDivision division)
     {
-      await _db.PurposeDivisions.AddAsync(division);
-      await _db.SaveChangesAsync();
+
+
+      try
+      {
+         _db.PurposeDivisions.Add(division);
+        _db.SaveChanges();
+      }
+      catch (Exception es)
+      {
+
+        throw;
+      }
+       
       return division;
     }
 

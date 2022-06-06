@@ -3,6 +3,6 @@
   public interface IStorageService
   {
     Task<string> DeleteFile(StorageArguement storageArguement, string fileName);
-    Task<string> UploadFileToStorage(Stream fileStream, string fileName, string blobName);
+    string UploadFileToStorage(Stream fileStream, string fileName, string blobName);
   }
 }

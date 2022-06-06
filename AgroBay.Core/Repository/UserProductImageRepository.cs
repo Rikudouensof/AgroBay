@@ -29,8 +29,11 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<UserProductImages> GetAll()
     {
-      var userPImages = _db.UserProductImages.Include(u => u.UserProduct);
-      _db.Entry<IEnumerable<UserProductImages>>(userPImages).State = EntityState.Detached;
+      var userPImages = _db.UserProductImages.Include(u => u.UserProduct).OrderBy(m => m.DateAdded);
+      foreach (var item in userPImages)
+      {
+        _db.Entry<UserProductImages>(item).State = EntityState.Detached;
+      }
       return userPImages;
     }
 

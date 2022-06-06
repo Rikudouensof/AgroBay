@@ -23,7 +23,7 @@ namespace AgroBay.Core.Services
 
     }
 
-    public async Task<string> UploadFileToStorage(Stream fileStream, string fileName,
+    public  string UploadFileToStorage(Stream fileStream, string fileName,
                                                  string blobName)
     {
 
@@ -45,11 +45,11 @@ namespace AgroBay.Core.Services
       BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
       fileStream.Position = 0;
       // Upload the file
-      await blobClient.UploadAsync(fileStream);
+      var settings =  blobClient.Upload(fileStream);
 
 
 
-      if (await Task.FromResult(true))
+      if (settings is not null)
       {
         return blobUri.AbsoluteUri;
       }

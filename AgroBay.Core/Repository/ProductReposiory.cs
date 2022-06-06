@@ -29,10 +29,15 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<Product> GetAll()
     {
-      var product = _db.Products.Include(p => p.SubCategory);
-      _db.Entry<IEnumerable<Product>>(product).State = EntityState.Detached;
+      var product = _db.Products.Include(p => p.SubCategory).OrderBy(m => m.Name);
+      foreach (var item in product)
+      {
+        _db.Entry<Product>(item).State = EntityState.Detached;
+      }
       return product;
     }
+
+
 
     public IEnumerable<Product> GetAllList()
     {

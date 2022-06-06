@@ -29,8 +29,11 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<SubCategory> GetAll()
     {
-      var subCategory = _db.SubCategories.Include(s => s.Categories);
-      _db.Entry<IEnumerable<SubCategory>>(subCategory).State = EntityState.Detached;
+      var subCategory = _db.SubCategories.Include(s => s.Categories).OrderBy(m => m.Name);
+      foreach (var item in subCategory)
+      {
+        _db.Entry<SubCategory>(item).State = EntityState.Detached;
+      }
       return subCategory;
     }
 

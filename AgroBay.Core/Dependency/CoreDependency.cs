@@ -22,16 +22,16 @@ namespace AgroBay.Core.Dependency
     {
 
       //Repository
-      services.AddScoped<ICategories_Repository, Categories_Repository>();
-      services.AddScoped<IDivisions_Repository, Divisions_Repository>();
-      services.AddScoped<IMessageRepository, MessageRepository>();
-      services.AddScoped<IProductReposiotory, ProductReposiotory>();
-      services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
-      services.AddScoped<IUserAddressRepository, UserAddressRepository>();
-      services.AddScoped<IUserProductImageRepository, UserProductImageRepository>();
-      services.AddScoped<IUserProductReviewRepository, UserProductReviewRepository>();
-      services.AddScoped<IUserProductRepository, UserProductRepository>();
-      services.AddScoped<IUserRepository, UserRepository>();
+      services.AddTransient<ICategories_Repository, Categories_Repository>();
+      services.AddTransient<IDivisions_Repository, Divisions_Repository>();
+      services.AddTransient<IMessageRepository, MessageRepository>();
+      services.AddTransient<IProductReposiotory, ProductReposiotory>();
+      services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
+      services.AddTransient<IUserAddressRepository, UserAddressRepository>();
+      services.AddTransient<IUserProductImageRepository, UserProductImageRepository>();
+      services.AddTransient<IUserProductReviewRepository, UserProductReviewRepository>();
+      services.AddTransient<IUserProductRepository, UserProductRepository>();
+      services.AddTransient<IUserRepository, UserRepository>();
 
 
       //Services
@@ -41,7 +41,7 @@ namespace AgroBay.Core.Dependency
       //services.AddScoped<object, MessageService>();
       services.AddScoped<IProductService, ProductService>();
       //  services.AddScoped<object, SearchSearvice>();
-      services.AddScoped<IStorageService, StorageService>();
+      services.AddTransient<IStorageService, StorageService>();
       services.AddScoped<ISubCategoryService, SubCategoryService>();
       services.AddScoped<IUserAddressService, UserAddressService>();
       services.AddScoped<IUserProductImageService, UserProductImageService>();

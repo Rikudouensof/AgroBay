@@ -29,7 +29,10 @@ namespace AgroBay.Core.Repository
     public IEnumerable<Message> GetAll()
     {
       var message = _db.Messages;
-      _db.Entry<IEnumerable<Message>>(message).State = EntityState.Detached;
+      foreach (var item in message)
+      {
+        _db.Entry<Message>(item).State = EntityState.Detached;
+      }
       return message;
     }
 

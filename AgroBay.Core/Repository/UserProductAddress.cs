@@ -28,8 +28,11 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<UserAdress> GetAll()
     {
-      var address = _db.UserAdresses.Include(u => u.User);
-      _db.Entry<IEnumerable<UserAdress>>(address).State = EntityState.Detached;
+      var address = _db.UserAdresses.Include(u => u.User).OrderBy(m => m.Name);
+      foreach (var item in address)
+      {
+        _db.Entry<UserAdress>(item).State = EntityState.Detached;
+      }
       return address;
     }
 

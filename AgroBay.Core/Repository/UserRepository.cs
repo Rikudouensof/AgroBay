@@ -27,9 +27,11 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<User> GetAll()
     {
-      var users = _db.Users;
-
-      _db.Entry<IEnumerable<User>>(users).State = EntityState.Detached;
+      var users = _db.Users.OrderBy(m => m.UserName);
+      foreach (var item in users)
+      {
+        _db.Entry<User>(item).State = EntityState.Detached;
+      }
       return users;
     }
 

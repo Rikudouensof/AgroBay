@@ -19,16 +19,17 @@ namespace AgroBay.DBTes.Controllers
     private ISubCategoryRepository _subCatRepo;
     private IProductReposiotory _prodRepo;
 
-    public ProductsController(IProductService _prodService, IProductReposiotory prodRepo)
+    public ProductsController(IProductService prodService, IProductReposiotory prodRepo, ISubCategoryRepository subCategoryRepository)
     {
-      _prodService = _prodService;
+      _prodService = prodService;
       _prodRepo = prodRepo;
+      _subCatRepo = subCategoryRepository;
     }
 
     // GET: Products
     public async Task<IActionResult> Index()
     {
-      var applicationDbContext = _prodRepo.GetAll;
+      IEnumerable<Product> applicationDbContext = _prodRepo.GetAll();
       return View(applicationDbContext);
     }
 

@@ -49,7 +49,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("PurposeDivisionId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.Message", b =>
@@ -83,7 +83,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.Product", b =>
@@ -118,7 +118,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.PurposeDivision", b =>
@@ -139,7 +139,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PurposeDivisions");
+                    b.ToTable("PurposeDivisions", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.SubCategory", b =>
@@ -169,7 +169,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("CategoriesId");
 
-                    b.ToTable("SubCategories");
+                    b.ToTable("SubCategories", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.User", b =>
@@ -299,7 +299,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAdresses");
+                    b.ToTable("UserAdresses", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.UserProduct", b =>
@@ -342,7 +342,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserProducts");
+                    b.ToTable("UserProducts", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.UserProductImages", b =>
@@ -367,7 +367,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("UserProductId");
 
-                    b.ToTable("UserProductImages");
+                    b.ToTable("UserProductImages", (string)null);
                 });
 
             modelBuilder.Entity("AgroBay.Core.Model.UserProductReview", b =>
@@ -399,7 +399,7 @@ namespace AgroBay.Core.Migrations
 
                     b.HasIndex("UserProductId");
 
-                    b.ToTable("UserProductReviews");
+                    b.ToTable("UserProductReviews", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

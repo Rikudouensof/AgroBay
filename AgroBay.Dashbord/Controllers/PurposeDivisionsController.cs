@@ -109,7 +109,7 @@ namespace AgroBay.DBTes.Controllers
       {
         try
         {
-          await _divService.Add(formPurposeDivision);
+          await _divService.Edit(formPurposeDivision);
         }
         catch (DbUpdateConcurrencyException)
         {

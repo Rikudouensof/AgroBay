@@ -28,8 +28,11 @@ namespace AgroBay.Core.Repository
 
     public IEnumerable<UserProductReview> GetAll()
     {
-      var review = _db.UserProductReviews.Include(u => u.UserProduct);
-      _db.Entry<IEnumerable<UserProductReview>>(review).State = EntityState.Detached;
+      var review = _db.UserProductReviews.Include(u => u.UserProduct).OrderBy(m => m.DateSet);
+      foreach (var item in review)
+      {
+        _db.Entry<UserProductReview>(item).State = EntityState.Detached;
+      }
       return review;
     }
 

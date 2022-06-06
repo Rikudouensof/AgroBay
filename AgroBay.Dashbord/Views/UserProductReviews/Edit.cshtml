@@ -1,7 +1,7 @@
-﻿@model AgroBay.Core.Model.UserProductReview
+﻿@model AgroBay.Core.ViewModel.FormUserProductReviewViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Product Review/Edit";
     Layout = "~/Views/Shared/_DashbordLayout.cshtml";
 }
 
@@ -34,11 +34,7 @@
                 <select asp-for="UserProductId" class="form-control" asp-items="ViewBag.UserProductId"></select>
                 <span asp-validation-for="UserProductId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateSet" class="control-label"></label>
-                <input asp-for="DateSet" class="form-control" />
-                <span asp-validation-for="DateSet" class="text-danger"></span>
-            </div>
+           
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

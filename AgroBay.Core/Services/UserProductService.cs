@@ -115,7 +115,7 @@ namespace AgroBay.Core.Services
           var file = new FileStream(filePath, FileMode.Create);
           input.File.CopyTo(file);
           var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
-          userProduct.ImageUrl = await url;
+          userProduct.ImageUrl =  url;
         }
       }
       catch
@@ -164,7 +164,7 @@ namespace AgroBay.Core.Services
           var file = new FileStream(filePath, FileMode.Create);
           input.File.CopyTo(file);
           var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
-          userProduct.ImageUrl = await url;
+          userProduct.ImageUrl =  url;
         }
       }
       catch

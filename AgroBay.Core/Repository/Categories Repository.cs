@@ -26,11 +26,13 @@ namespace AgroBay.Core.Repository
       return category;
     }
 
-    public async Task<IEnumerable<Category>> GetAll()
+    public IEnumerable<Category> GetAll()
     {
-      var categories = _db.Categories.Include(c => c.PurposeDivision);
-      
-      _db.Entry<IEnumerable<Category>>(categories).State = EntityState.Detached;
+      var categories = _db.Categories.Include(c => c.PurposeDivision).OrderBy(m => m.Name);
+      foreach (var item in categories)
+      {
+        _db.Entry<Category>(item).State = EntityState.Detached;
+      }
       return categories;
     }
     public  IEnumerable<Category> GetAllList()

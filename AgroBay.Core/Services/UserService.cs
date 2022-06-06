@@ -116,7 +116,7 @@ namespace AgroBay.Core.Services
           var file = new FileStream(filePath, FileMode.Create);
           user.File.CopyTo(file);
           var url = _azStorageService.UploadFileToStorage(file, fileName, blobname);
-          dbUser.ImageUrl = await url;
+          dbUser.ImageUrl =  url;
         }
       }
       catch

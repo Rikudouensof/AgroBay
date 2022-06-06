@@ -23,14 +23,17 @@ namespace AgroBay.Core.Repository
     public UserProduct Get(int id)
     {
       var userProduct = _db.UserProducts.Include(u => u.Product).Include(u => u.User).First(c => c.id == id);
-      _db.Entry<UserProduct>(userProduct).State = EntityState.Detached;
+      _db.Entry < UserProduct>(userProduct).State = EntityState.Detached;
       return userProduct;
     }
 
     public IEnumerable<UserProduct> GetAll()
     {
-      var userProducts = _db.UserProducts.Include(u => u.Product).Include(u => u.User);
-      _db.Entry<IEnumerable<UserProduct>>(userProducts).State = EntityState.Detached;
+      var userProducts = _db.UserProducts.Include(u => u.Product).Include(u => u.User).OrderBy(m => m.Name);
+      foreach (var item in userProducts)
+      {
+        _db.Entry<UserProduct>(item).State = EntityState.Detached;
+      }
       return userProducts;
     }
 
