@@ -9,9 +9,13 @@ using AgroBay.Core.Model;
 using AgroBay.Core.Repository.Interface;
 using AgroBay.Core.Services.Interface;
 using AgroBay.Core.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgroBay.DBTes.Controllers
 {
+
+
+  [Authorize]
   public class UserAdressesController : Controller
   {
     private readonly IUserAddressRepository _userAddressRepo;

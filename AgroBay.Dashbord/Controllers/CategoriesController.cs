@@ -11,9 +11,12 @@ using AgroBay.Core.Repository.Interface;
 using AgroBay.Core.ViewModel;
 using AgroBay.Core.Services.Interface;
 using AgroBay.Core.Mapping;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgroBay.DBTes.Controllers
 {
+
+  [Authorize]
   public class CategoriesController : Controller
   {
     private readonly ICategories_Repository _catRepo;
